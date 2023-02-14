@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Cors;
 namespace CapstoneBackend.Controllers
 {
     [ApiController]
-    [Route("api/Patient")]
+    [Route("/api/Patient")]
     public class PatientController : Controller
     {
         private readonly PatientService _patientService;
