@@ -15,7 +15,7 @@ namespace CapstoneBackend.Services
             IOptions<DatabaseSettings> DatabaseSettings, IConfiguration config)
         {
             _config = config;
-            string connectionString = _config["ConnectionString"];
+            string connectionString = "mongodb+srv://CapstoneUsername:CapstonePassword@cluster1.cnvgzja.mongodb.net/?retryWrites=true&w=majority";
 
             var mongoClient = new MongoClient(
                 connectionString);
