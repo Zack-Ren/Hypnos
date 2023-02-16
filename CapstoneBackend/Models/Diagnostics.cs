@@ -14,26 +14,26 @@ namespace CapstoneBackend.Models
         [BsonElement("dataAcquisitionStartTime")]
         public DateTime DataAcquisitionStartTime { get; set; }
 
+        [BsonElement("dataAcquisitionEndTime")]
+        public DateTime DataAcquisitionEndTime { get; set; }
+
         [BsonElement("accelerationX")]
-        public List<int> AccelerationX { get; set; }
+        public List<double> AccelerationX { get; set; }
 
         [BsonElement("accelerationY")]
-        public List<int> AccelerationY { get; set; }
+        public List<double> AccelerationY { get; set; }
 
         [BsonElement("accelerationZ")]
-        public List<int> AccelerationZ { get; set; }
+        public List<double> AccelerationZ { get; set; }
 
         [BsonElement("angularAccelerationX")]
-        public List<int> AngularAccelerationX { get; set; }
+        public List<double> AngularAccelerationX { get; set; }
 
         [BsonElement("angularAccelerationY")]
-        public List<int> AngularAccelerationY { get; set; }
+        public List<double> AngularAccelerationY { get; set; }
 
         [BsonElement("angularAccelerationZ")]
-        public List<int> AngularAccelerationZ { get; set; }
-
-        [BsonElement("timeInterval")]
-        public List<int> TimeInterval { get; set; }
+        public List<double> AngularAccelerationZ { get; set; }
     }
 }
 
