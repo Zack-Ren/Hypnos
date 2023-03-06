@@ -75,7 +75,7 @@ namespace CapstoneBackend.Controllers
                 return NotFound();
             }
 
-            await _patientService.RemoveAsync(id);
+            await _patientService.RemoveAsync(patient);
 
             return NoContent();
         }
