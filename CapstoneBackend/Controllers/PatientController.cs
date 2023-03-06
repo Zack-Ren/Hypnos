@@ -59,8 +59,6 @@ namespace CapstoneBackend.Controllers
                 return NotFound();
             }
 
-            updatedPatient.Id = patient.Id;
-
             await _patientService.UpdateAsync(id, updatedPatient);
 
             return NoContent();

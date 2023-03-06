@@ -1,4 +1,5 @@
 ﻿using System;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace CapstoneBackend.Models
@@ -6,7 +7,8 @@ namespace CapstoneBackend.Models
 	public class Diagnostics
 	{
         [BsonId]
-        public string Id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? Id { get; set; }
 
         [BsonElement("patientId")]
         public string PatientId { get; set; }

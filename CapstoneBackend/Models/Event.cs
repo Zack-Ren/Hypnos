@@ -1,4 +1,5 @@
 ﻿using System;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace CapstoneBackend.Models
@@ -6,13 +7,14 @@ namespace CapstoneBackend.Models
 	public class Event
 	{
         [BsonId]
-        public string Id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? Id { get; set; }
 
         [BsonElement("patientId")]
         public string PatientId { get; set; }
 
         [BsonElement("doctorId")]
-        public string DoctorId { get; set; }
+        public string? DoctorId { get; set; }
 
         [BsonElement("doctorNotes")]
         public string DoctorNotes { get; set; }

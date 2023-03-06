@@ -14,8 +14,10 @@ namespace CapstoneBackend.Controllers
     {
         private readonly DoctorService _doctorService;
 
-        public DoctorController(DoctorService doctorService) =>
+        public DoctorController(DoctorService doctorService)
+        {
             _doctorService = doctorService;
+        }
 
         [HttpGet]
         public async Task<List<Doctor>> Get() =>
@@ -54,7 +56,7 @@ namespace CapstoneBackend.Controllers
 
             updatedDoctor.Id = doctor.Id;
 
-            await _doctorService.UpdateAsync(id, updatedDoctor);
+            await _doctorService.UpdateAsync(doctor, updatedDoctor);
 
             return NoContent();
         }
@@ -69,7 +71,7 @@ namespace CapstoneBackend.Controllers
                 return NotFound();
             }
 
-            await _doctorService.RemoveAsync(id);
+            await _doctorService.RemoveAsync(doctor);
 
             return NoContent();
         }

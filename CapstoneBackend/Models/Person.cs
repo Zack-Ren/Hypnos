@@ -7,8 +7,8 @@ namespace CapstoneBackend.Models
 	public class Person
 	{
         [BsonId]
-        //[BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? Id { get; set; }
 
         [BsonElement("username")]
         public string Username { get; set; }

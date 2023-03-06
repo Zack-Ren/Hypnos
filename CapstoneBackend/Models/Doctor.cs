@@ -8,8 +8,8 @@ namespace CapstoneBackend.Models
         [BsonElement("clinicAddress")]
         public string ClinicAddress { get; set; }
 
-        [BsonElement("ListOfPatients")]
-        public List<string> ListOfPatients { get; set; }
+        [BsonElement("setOfPatients")]
+        public HashSet<string> SetOfPatients { get; set; }
 	}
 }
 

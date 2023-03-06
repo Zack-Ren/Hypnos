@@ -5,7 +5,7 @@ namespace CapstoneBackend.Models
 	public class Patient : Person
 	{
         [BsonElement("doctorId")]
-        public string DoctorId { get; set; }
+        public string? DoctorId { get; set; }
     }
 }
 
