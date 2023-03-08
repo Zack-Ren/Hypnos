@@ -56,7 +56,7 @@ namespace CapstoneBackend.Controllers
 
             updatedDoctor.Id = doctor.Id;
 
-            await _doctorService.UpdateAsync(doctor, updatedDoctor);
+            await _doctorService.UpdateAsync(id, updatedDoctor);
 
             return NoContent();
         }

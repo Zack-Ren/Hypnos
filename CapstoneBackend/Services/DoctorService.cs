@@ -48,8 +48,10 @@ namespace CapstoneBackend.Services
             await _doctorCollection.InsertOneAsync(newDoctor);
         }
 
-        public async Task UpdateAsync(Doctor originalDoctor, Doctor updatedDoctor)
+        public async Task UpdateAsync(string originalDoctorId, Doctor updatedDoctor)
         {
+            var originalDoctor = await _doctorCollection.Find(x => x.Id == originalDoctorId).FirstOrDefaultAsync();
+
             // If the setOfPatients was updated, validate it
             if (!originalDoctor.SetOfPatients.SetEquals(updatedDoctor.SetOfPatients))
             {
@@ -86,6 +88,7 @@ namespace CapstoneBackend.Services
                 foreach (Event filteredEvent in filteredEvents)
                 {
                     filteredEvent.DoctorId = null;
+
                     await _eventService.UpdateAsync(filteredEvent.Id, filteredEvent);
                 }
             }
