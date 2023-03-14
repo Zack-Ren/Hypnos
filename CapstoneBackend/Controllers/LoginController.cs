@@ -25,7 +25,7 @@ namespace CapstoneBackend.Controllers
                 return BadRequest(new { message = "Username or Password is incorrect." });
             }
 
-            return Ok(new { message = "Person has successfully been authenticated." });
+            return Ok(person);
         }
     }
 }
