@@ -33,6 +33,22 @@ namespace CapstoneBackend.Services
         public async Task<Event?> GetAsync(string id) =>
             await _eventCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
+        public async Task<Event?> GetEventByDoctorOrPatient(string ?doctorId, string ?patientId)
+        {
+            if (doctorId != null && patientId != null)
+            {
+                return await _eventCollection.Find(eventEntity => eventEntity.PatientId == patientId && eventEntity.DoctorId == doctorId).FirstOrDefaultAsync();
+            }
+            else if (doctorId != null && patientId == null)
+            {
+                return await _eventCollection.Find(eventEntity => eventEntity.DoctorId == doctorId).FirstOrDefaultAsync();
+            } else
+            {
+                return await _eventCollection.Find(eventEntity => eventEntity.PatientId == patientId).FirstOrDefaultAsync();
+
+            }
+        }
+
         public async Task CreateAsync(Event newEvent) =>
             await _eventCollection.InsertOneAsync(newEvent);
 

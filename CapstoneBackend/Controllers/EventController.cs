@@ -34,6 +34,25 @@ namespace CapstoneBackend.Controllers
             return eventEntity;
         }
 
+        [HttpGet("Filter")]
+        public async Task<ActionResult<Event>> Get(string ?doctorId, string ?patientId)
+        {
+            if (doctorId == null && patientId == null)
+            {
+                throw new Exception($"{nameof(doctorId)} and {nameof(patientId)} cannot both be null.");
+            } else
+            {
+                var eventEntity = await _eventEntityService.GetEventByDoctorOrPatient(doctorId, patientId);
+
+                if (eventEntity is null)
+                {
+                    return NotFound();
+                }
+
+                return eventEntity;
+            } 
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post(Event newEvent)
         {

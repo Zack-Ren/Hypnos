@@ -39,6 +39,19 @@ namespace CapstoneBackend.Controllers
             return patient;
         }
 
+        [HttpGet("Doctor")]
+        public async Task<ActionResult<Patient>> GetPatientWithTheDoctor(string id)
+        {
+            var patient = await _patientService.GetPatientWithTheSpecifiedDoctor(id);
+
+            if (patient is null)
+            {
+                return NotFound();
+            }
+
+            return patient;
+        }
+
         [HttpPost]
         [EnableCors]
         public async Task<IActionResult> Post(Patient newPatient)
