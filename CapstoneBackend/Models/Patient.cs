@@ -6,6 +6,9 @@ namespace CapstoneBackend.Models
 	{
         [BsonElement("doctorId")]
         public string? DoctorId { get; set; }
+
+        [BsonElement("setOfEvents")]
+        public HashSet<string> SetOfEvents { get; set; }
     }
 }
 

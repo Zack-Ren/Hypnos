@@ -22,8 +22,8 @@ namespace CapstoneBackend.Models
         [BsonElement("patientNotes")]
         public string PatientNotes { get; set; }
 
-        [BsonElement("listOfDiagnostics")]
-        public List<string> ListOfDiagnostics { get; set; }
+        [BsonElement("setOfDiagnostics")]
+        public HashSet<string> SetOfDiagnostics { get; set; }
 
 	}
 }
