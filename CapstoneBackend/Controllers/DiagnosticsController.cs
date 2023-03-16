@@ -9,19 +9,19 @@ namespace CapstoneBackend.Controllers
     [Route("api/Diagnostic")]
     public class DiagnosticController : Controller
     {
-        private readonly DiagnosticsService _diagnosticsService;
+        private readonly DiagnosticService _diagnosticService;
 
-        public DiagnosticController(DiagnosticsService diagnosticsService) =>
-            _diagnosticsService = diagnosticsService;
+        public DiagnosticController(DiagnosticService diagnosticService) =>
+            _diagnosticService = diagnosticService;
 
         [HttpGet]
         public async Task<List<Diagnostics>> Get() =>
-            await _diagnosticsService.GetAsync();
+            await _diagnosticService.GetAsync();
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Diagnostics>> Get(string id)
         {
-            var diagnostics = await _diagnosticsService.GetAsync(id);
+            var diagnostics = await _diagnosticService.GetAsync(id);
 
             if (diagnostics is null)
             {
@@ -34,7 +34,7 @@ namespace CapstoneBackend.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(Diagnostics newDiagnostic)
         {
-            await _diagnosticsService.CreateAsync(newDiagnostic);
+            await _diagnosticService.CreateAsync(newDiagnostic);
 
             return CreatedAtAction(nameof(Get), new { id = newDiagnostic.Id }, newDiagnostic);
         }
@@ -42,7 +42,7 @@ namespace CapstoneBackend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, Diagnostics updatedDiagnostic)
         {
-            var diagnostics = await _diagnosticsService.GetAsync(id);
+            var diagnostics = await _diagnosticService.GetAsync(id);
 
             if (diagnostics is null)
             {
@@ -51,7 +51,7 @@ namespace CapstoneBackend.Controllers
 
             updatedDiagnostic.Id = diagnostics.Id;
 
-            await _diagnosticsService.UpdateAsync(id, updatedDiagnostic);
+            await _diagnosticService.UpdateAsync(id, updatedDiagnostic);
 
             return NoContent();
         }
@@ -59,14 +59,14 @@ namespace CapstoneBackend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            var diagnostics = await _diagnosticsService.GetAsync(id);
+            var diagnostics = await _diagnosticService.GetAsync(id);
 
             if (diagnostics is null)
             {
                 return NotFound();
             }
 
-            await _diagnosticsService.RemoveAsync(id);
+            await _diagnosticService.RemoveAsync(id);
 
             return NoContent();
         }

@@ -15,7 +15,7 @@ namespace CapstoneBackend.Services
 
         //private readonly EventService _eventService;
 
-        //private readonly DiagnosticsService _diagnosticsService;
+        //private readonly DiagnosticService _diagnosticService;
 
         public PatientService(
             IOptions<DatabaseSettings> DatabaseSettings, IConfiguration config)
@@ -36,7 +36,7 @@ namespace CapstoneBackend.Services
 
             //_eventService = eventService;
 
-            //_diagnosticsService = diagnosticsService;
+            //_diagnosticService = diagnosticService;
         }
 
         public async Task<List<Patient>> GetAsync() =>
@@ -94,13 +94,13 @@ namespace CapstoneBackend.Services
             //{
             //    foreach (Event filteredEvent in filteredEvents)
             //    {
-            //        List<Diagnostics> diagnostics = await _diagnosticsService.GetAsync();
+            //        List<Diagnostics> diagnostics = await _diagnosticService.GetAsync();
             //        List<Diagnostics> filteredDiagnostics = diagnostics.FindAll(x => x.PatientId == patientToDelete.Id);
             //        if (filteredDiagnostics != null)
             //        {
             //            foreach (Diagnostics filteredDiagnostic in filteredDiagnostics)
             //            {
-            //                await _diagnosticsService.RemoveAsync(filteredDiagnostic.Id);
+            //                await _diagnosticService.RemoveAsync(filteredDiagnostic.Id);
             //            }
             //        }
             //        await _eventService.RemoveAsync(filteredEvent.Id);

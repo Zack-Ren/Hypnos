@@ -15,7 +15,7 @@ namespace CapstoneBackend
             builder.Services.AddSingleton<PatientService>();
             builder.Services.AddSingleton<DoctorService>();
             builder.Services.AddSingleton<EventService>();
-            builder.Services.AddSingleton<DiagnosticsService>();
+            builder.Services.AddSingleton<DiagnosticService>();
             builder.Services.AddSingleton<PersonService>();
 
             builder.Services.AddControllers();

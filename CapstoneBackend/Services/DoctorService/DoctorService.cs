@@ -41,6 +41,9 @@ namespace CapstoneBackend.Services
         public async Task<Doctor?> GetAsync(string id) =>
             await _doctorCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
+        public async Task<Doctor?> GetDoctorOfAPatient(string patientId) =>
+            await _doctorCollection.Find(doctor => doctor.SetOfPatients.Contains(patientId)).FirstOrDefaultAsync();
+
         public async Task CreateAsync(Doctor newDoctor)
         {
             await this.ValidateSetOfPatients(newDoctor.SetOfPatients);

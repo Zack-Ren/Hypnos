@@ -5,13 +5,13 @@ using MongoDB.Driver;
 
 namespace CapstoneBackend.Services
 {
-	public class DiagnosticsService
+	public class DiagnosticService
 	{
         private readonly IMongoCollection<Diagnostics> _diagnosticCollection;
 
         private readonly IConfiguration _config;
 
-        public DiagnosticsService(
+        public DiagnosticService(
             IOptions<DatabaseSettings> DatabaseSettings, IConfiguration config)
         {
             _config = config;

@@ -16,5 +16,9 @@
 
   <ItemGroup>
     <None Remove="MongoDB.Driver" />
+    <None Remove="Services\Event\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\EventService\" />
   </ItemGroup>
 </Project>
