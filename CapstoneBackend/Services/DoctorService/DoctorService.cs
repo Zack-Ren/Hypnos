@@ -15,8 +15,10 @@ namespace CapstoneBackend.Services
 
         private readonly EventService _eventService;
 
+        private readonly ManagementService _managementService;
+
         public DoctorService(
-            IOptions<DatabaseSettings> DatabaseSettings, IConfiguration config, PatientService patientService, EventService eventService)
+            IOptions<DatabaseSettings> DatabaseSettings, IConfiguration config, PatientService patientService, EventService eventService, ManagementService managementService)
         {
             _config = config;
             string connectionString = _config["ConnectionString"];
@@ -33,6 +35,8 @@ namespace CapstoneBackend.Services
             _patientService = patientService;
 
             _eventService = eventService;
+
+            _managementService = managementService;
         }
 
         public async Task<List<Doctor>> GetAsync() =>
@@ -53,18 +57,10 @@ namespace CapstoneBackend.Services
 
         public async Task UpdateAsync(string originalDoctorId, Doctor updatedDoctor)
         {
-            var originalDoctor = await _doctorCollection.Find(x => x.Id == originalDoctorId).FirstOrDefaultAsync();
-
-            // If the setOfPatients was updated, validate it
-            if (!originalDoctor.SetOfPatients.SetEquals(updatedDoctor.SetOfPatients))
-            {
-                await this.ValidateSetOfPatients(updatedDoctor.SetOfPatients);
-            }
-
-            await _doctorCollection.ReplaceOneAsync(x => x.Id == updatedDoctor.Id, updatedDoctor);
+            await _managementService.UpdateDoctorAsync(originalDoctorId, updatedDoctor);
         }
 
-        public async Task RemoveAsync(Doctor doctorToDelete)
+        public async Task RemoveDoctorAsync(Doctor doctorToDelete)
         {
 
             foreach (string patientId in doctorToDelete.SetOfPatients)
