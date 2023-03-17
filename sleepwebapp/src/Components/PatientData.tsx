@@ -3,16 +3,25 @@ import { useParams } from 'react-router-dom';
 import { ArrowNarrowLeft } from'tabler-icons-react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from './NavBar';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-interface patientProps {
-    name: String,
-    dob: string,
-    sex: String;
-}
 
-function PatientData ( {name, dob, sex} : patientProps) {
+function PatientData () {
+
+    const {patientId} = useParams();
+
     const navigate = useNavigate();
 
+    const [patient,setPatient] = useState<any>([]);
+
+    
+    useEffect(() => {
+        axios.get(`api/Patient/${patientId}`).then((response) => {
+            setPatient(response.data);
+        });
+    }, [patientId]);
+    console.log(patientId)
     return (
             <Group spacing="xl">
                 <NavBar />
@@ -22,9 +31,9 @@ function PatientData ( {name, dob, sex} : patientProps) {
                             <ArrowNarrowLeft size={48}/>
                         </ActionIcon>
                         <Stack>
-                            <Title> {name} </Title>
-                            <Text fz="xl">DOB: {dob}</Text>
-                            <Text fz="xl">Sex: {sex}</Text>
+                            <Title> {patient.name} </Title>
+                            <Text fz="xl">DOB: </Text>
+                            <Text fz="xl">Sex: </Text>
                         </Stack>
                         <Stack>
                             <Title>Collected Data</Title>
