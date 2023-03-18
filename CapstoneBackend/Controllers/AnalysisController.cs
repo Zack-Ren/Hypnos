@@ -17,12 +17,16 @@ namespace CapstoneBackend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Analysis>> Get(string id)
         {
-            var analysis = await _analysisService.GetAsync(id);
+            var diagnostics = await _analysisService.GetAsync(id);
 
-            if (analysis is null)
+            if (diagnostics is null)
             {
                 return NotFound();
             }
+
+            Analysis analysis = new Analysis(diagnostics);
+            analysis.findSleepPositions(analysis.AccelerationX, analysis.AccelerationZ, analysis.SleepPositions);
+            analysis.findBreathingRates(analysis.AccelerationY, analysis.BreathingRates, analysis.WindowLength);
 
             return analysis;
         }
