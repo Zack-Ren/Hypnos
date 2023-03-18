@@ -2,7 +2,6 @@ import { Button, Box, Title, Space, Alert} from '@mantine/core';
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { DoctorContext } from './App';
 
 async function loginUser(username,password) {
   return axios.post('api/Login', {
@@ -11,20 +10,12 @@ async function loginUser(username,password) {
   })
   .then(response => response.status);
 }
-
-async function getDoc(username,password) {
-  return axios.post('api/Login', {
-    username: username,
-    password: password
-  })
-  .then(response => response.data.id);
-}
+  
 
 function Login() {
 
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
-  const [doctor, setDoctor] = useContext(DoctorContext);
 
   const navigate = useNavigate();
 
@@ -35,8 +26,6 @@ function Login() {
       password
     );
     if(token == 200) {
-      const doctor = await getDoc(username,password)
-      setDoctor(doctor)
       navigate(`/patientlist`)
     }
     else {

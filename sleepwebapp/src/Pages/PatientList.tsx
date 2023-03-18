@@ -23,7 +23,9 @@ function PatientList() {
         <AppShell navbar={<NavBar />} >
             <HeaderBar title={"Patients"}></HeaderBar>
             <div>
-                {data}
+                {data.map((patient:any) => (
+                    <p key={0} onClick={() => navigate(`/diagnosticlist/${patient}`)} >{patient}</p>
+                ))}
             </div>
         </AppShell>
     );

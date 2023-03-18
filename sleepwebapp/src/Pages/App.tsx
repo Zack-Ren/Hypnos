@@ -38,8 +38,8 @@ function App() {
                 <Route path='/patientlist' element={<PatientList />}/>
                 <Route path='/starredlist' element={<PatientList />}/>
                 <Route path='/archivedlist' element={<PatientList />}/>
-                <Route path='/patientdata/:patientid' element={<PatientData />}/>
-                <Route path='/diagnosticlist' element={<DiagnosticList />} />
+                <Route path='/patientdata/:diagnosticid' element={<PatientData />}/>
+                <Route path='/diagnosticlist/:patientid' element={<DiagnosticList/>} />
               
             </Routes>
           </Router>
