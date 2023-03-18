@@ -31,12 +31,4 @@ function PatientList() {
     );
 }
 
-/*
-            <div>
-                {data.map((patient) => (
-                    <p key={patient.id} onClick={() => navigate(`/diagnosticlist`)} >{patient.name}</p>
-                ))}
-            </div>
-*/
-
 export default PatientList;
