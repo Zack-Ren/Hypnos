@@ -1,5 +1,5 @@
-import { Button, Box, Title, Space, Alert} from '@mantine/core';
-import { useState, useContext } from 'react';
+import { Button, Title, Container, Paper, TextInput, PasswordInput } from '@mantine/core';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -33,23 +33,16 @@ function Login() {
     }
   }
     return (
-      <Box sx={{ maxWidth: 300 }} mx="auto">
-          <h1>Please Log In</h1>
-          <form onSubmit={handleSubmit}>
-            <label>
-              <Title>Username</Title>
-              <input type="text" onChange={e => setUserName(e.target.value)} required/>
-            </label>
-            <label>
-            <Title>Password</Title>
-              <input type="password" onChange={e => setPassword(e.target.value)} required/>
-            </label>
-            <Space h="md"/>
-            <div>
-              <Button type="submit" onClick={handleSubmit}>Submit</Button>
-            </div>
-          </form>
-      </Box>
+      <Container size={420} my={40}>
+          <Title align="center">Please Log In</Title>
+          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+            <TextInput label="Username" placeholder="email@example.com" onChange={e => setUserName(e.target.value)} required/>
+            <PasswordInput label="Password" placeholder="Your password" onChange={e => setPassword(e.target.value)} required/>
+            <Button fullWidth mt="xl" onClick={handleSubmit}>
+              Sign in
+            </Button>
+          </Paper>
+      </Container>
     );
 }
 
