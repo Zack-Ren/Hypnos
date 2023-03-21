@@ -135,6 +135,25 @@ namespace CapstoneBackend.Services
         }
 
         /// <summary>
+        /// Validates an individual doctor. Determines if it exists and throws an error if it does not.
+        /// </summary>
+        /// <param name="doctorId">Represents the id of the doctor to validate</param>
+        /// <param name="exceptionMessageDetails">Represents a custom error message passed from the caller function</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<Doctor> ValidateDoctor(string doctorId, string exceptionMessageDetails)
+        {
+            var doctor = await this.GetDoctorAsync(doctorId);
+
+            if (doctor == null)
+            {
+                throw new Exception($"Doctor with id {doctorId} does not exist. {exceptionMessageDetails}");
+            }
+
+            return doctor;
+        }
+
+        /// <summary>
         /// Retrieves all the patients
         /// </summary>
         /// <returns></returns>
@@ -272,76 +291,6 @@ namespace CapstoneBackend.Services
             return patient;
         }
 
-        /// <summary>
-        /// Validates an individual doctor. Determines if it exists and throws an error if it does not.
-        /// </summary>
-        /// <param name="doctorId">Represents the id of the doctor to validate</param>
-        /// <param name="exceptionMessageDetails">Represents a custom error message passed from the caller function</param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        private async Task<Doctor> ValidateDoctor(string doctorId, string exceptionMessageDetails)
-        {
-            var doctor = await this.GetDoctorAsync(doctorId);
-
-            if (doctor == null)
-            {
-                throw new Exception($"Doctor with id {doctorId} does not exist. {exceptionMessageDetails}");
-            }
-
-            return doctor;
-        }
-
-        /// <summary>
-        /// Validates an individual diagnostic. Determines if it exists and throws an error if it does not.
-        /// </summary>
-        /// <param name="diagnosticId">Represents the id of the diagnostic to validate</param>
-        /// <param name="exceptionMessageDetails">Represents a custom error message passed from the caller function</param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        private async Task<Diagnostics> ValidateDiagnostic(string diagnosticId, string exceptionMessageDetails)
-        {
-            var diagnostic = await this.GetDiagnosticAsync(diagnosticId);
-
-            if (diagnostic == null)
-            {
-                throw new Exception($"Diagnostic with id {diagnosticId} does not exist. {exceptionMessageDetails}");
-            }
-
-            return diagnostic;
-        }
-
-        /// <summary>
-        /// Validates an individual event. Determines if it exists and throws and error if it does not.
-        /// </summary>
-        /// <param name="eventId">Represents the id of the event to validate.</param>
-        /// <param name="exceptionMessageDetails">Represents a custom error message passed from the caller function</param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        private async Task<Event> ValidateEvent(string eventId, string exceptionMessageDetails)
-        {
-            var eventEntity = await this.GetEventAsync(eventId);
-
-            if (eventEntity == null)
-            {
-                throw new Exception($"Event with id {eventId} does not exist. {exceptionMessageDetails}");
-            }
-
-            return eventEntity;
-        }
-
-        /// <summary>
-        /// Validates a set of DiagnosticIds. Determines if each id exists.
-        /// </summary>
-        /// <param name="setOfDiagnosticIds">Represents the set of diagnostic ids.</param>
-        /// <returns></returns>
-        public async Task ValidateSetOfDiagnostics(HashSet<string> setOfDiagnosticIds)
-        {
-            foreach (string diagnosticId in setOfDiagnosticIds)
-            {
-                Diagnostics diagnostic = await this.ValidateDiagnostic(diagnosticId, "The set of diagnostics contains non-existient diagnostic ids. The set of diagnosticIds is not valid.");
-            }
-        }
-
         // Events
         /// <summary>
         /// Retrieves all the events
@@ -455,6 +404,25 @@ namespace CapstoneBackend.Services
             await _eventCollection.DeleteOneAsync(x => x.Id == id);
         }
 
+        /// <summary>
+        /// Validates an individual event. Determines if it exists and throws and error if it does not.
+        /// </summary>
+        /// <param name="eventId">Represents the id of the event to validate.</param>
+        /// <param name="exceptionMessageDetails">Represents a custom error message passed from the caller function</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private async Task<Event> ValidateEvent(string eventId, string exceptionMessageDetails)
+        {
+            var eventEntity = await this.GetEventAsync(eventId);
+
+            if (eventEntity == null)
+            {
+                throw new Exception($"Event with id {eventId} does not exist. {exceptionMessageDetails}");
+            }
+
+            return eventEntity;
+        }
+
         // Diagnostics
         /// <summary>
         /// Retrieves all Diagnostics
@@ -495,6 +463,38 @@ namespace CapstoneBackend.Services
         /// <returns></returns>
         public async Task RemoveDiagnosticAsync(string id) =>
             await _diagnosticCollection.DeleteOneAsync(x => x.Id == id);
+
+        /// <summary>
+        /// Validates a set of DiagnosticIds. Determines if each id exists.
+        /// </summary>
+        /// <param name="setOfDiagnosticIds">Represents the set of diagnostic ids.</param>
+        /// <returns></returns>
+        public async Task ValidateSetOfDiagnostics(HashSet<string> setOfDiagnosticIds)
+        {
+            foreach (string diagnosticId in setOfDiagnosticIds)
+            {
+                Diagnostics diagnostic = await this.ValidateDiagnostic(diagnosticId, "The set of diagnostics contains non-existient diagnostic ids. The set of diagnosticIds is not valid.");
+            }
+        }
+
+        /// <summary>
+        /// Validates an individual diagnostic. Determines if it exists and throws an error if it does not.
+        /// </summary>
+        /// <param name="diagnosticId">Represents the id of the diagnostic to validate</param>
+        /// <param name="exceptionMessageDetails">Represents a custom error message passed from the caller function</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private async Task<Diagnostics> ValidateDiagnostic(string diagnosticId, string exceptionMessageDetails)
+        {
+            var diagnostic = await this.GetDiagnosticAsync(diagnosticId);
+
+            if (diagnostic == null)
+            {
+                throw new Exception($"Diagnostic with id {diagnosticId} does not exist. {exceptionMessageDetails}");
+            }
+
+            return diagnostic;
+        }
     }
 }
 

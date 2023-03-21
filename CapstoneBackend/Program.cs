@@ -17,6 +17,7 @@ namespace CapstoneBackend
             builder.Services.AddSingleton<EventService>();
             builder.Services.AddSingleton<DiagnosticService>();
             builder.Services.AddSingleton<PersonService>();
+            builder.Services.AddSingleton <ManagementService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

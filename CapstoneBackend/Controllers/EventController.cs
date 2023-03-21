@@ -12,19 +12,19 @@ namespace CapstoneBackend.Controllers
     [Route("api/Event")]
     public class EventController : Controller
     {
-        private readonly EventService _eventEntityService;
+        private readonly ManagementService _managementService;
 
-        public EventController(EventService eventEntityService) =>
-            _eventEntityService = eventEntityService;
+        public EventController(ManagementService managementService) =>
+            _managementService = managementService;
 
         [HttpGet]
         public async Task<List<Event>> Get() =>
-            await _eventEntityService.GetAsync();
+            await _managementService.GetEventAsync();
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Event>> Get(string id)
         {
-            var eventEntity = await _eventEntityService.GetAsync(id);
+            var eventEntity = await _managementService.GetEventAsync(id);
 
             if (eventEntity is null)
             {
@@ -42,7 +42,7 @@ namespace CapstoneBackend.Controllers
                 throw new Exception($"{nameof(doctorId)} and {nameof(patientId)} cannot both be null.");
             } else
             {
-                var eventEntity = await _eventEntityService.GetEventByDoctorOrPatient(doctorId, patientId);
+                var eventEntity = await _managementService.GetEventByDoctorOrPatient(doctorId, patientId);
 
                 if (eventEntity is null)
                 {
@@ -56,7 +56,7 @@ namespace CapstoneBackend.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(Event newEvent)
         {
-            await _eventEntityService.CreateAsync(newEvent);
+            await _managementService.CreateEventAsync(newEvent);
 
             return CreatedAtAction(nameof(Get), new { id = newEvent.Id }, newEvent);
         }
@@ -64,7 +64,7 @@ namespace CapstoneBackend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, Event updatedEvent)
         {
-            var eventEntity = await _eventEntityService.GetAsync(id);
+            var eventEntity = await _managementService.GetEventAsync(id);
 
             if (eventEntity is null)
             {
@@ -73,7 +73,7 @@ namespace CapstoneBackend.Controllers
 
             updatedEvent.Id = eventEntity.Id;
 
-            await _eventEntityService.UpdateAsync(id, updatedEvent);
+            await _managementService.UpdateEventAsync(id, updatedEvent);
 
             return NoContent();
         }
@@ -81,14 +81,14 @@ namespace CapstoneBackend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            var eventEntity = await _eventEntityService.GetAsync(id);
+            var eventEntity = await _managementService.GetEventAsync(id);
 
             if (eventEntity is null)
             {
                 return NotFound();
             }
 
-            await _eventEntityService.RemoveAsync(id);
+            await _managementService.RemoveEventAsync(id);
 
             return NoContent();
         }

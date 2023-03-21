@@ -15,21 +15,21 @@ namespace CapstoneBackend.Controllers
     [Route("/api/Patient")]
     public class PatientController : Controller
     {
-        private readonly PatientService _patientService;
+        private readonly ManagementService _managementService;
 
-        public PatientController(PatientService patientService) =>
-            _patientService = patientService;
+        public PatientController(ManagementService managementService) =>
+            _managementService = managementService;
 
         [HttpGet]
         [EnableCors]
         public async Task<List<Patient>> Get() =>
-            await _patientService.GetAsync();
+            await _managementService.GetPatientAsync();
 
         [HttpGet("{id}")]
         [EnableCors]
         public async Task<ActionResult<Patient>> Get(string id)
         {
-            var patient = await _patientService.GetAsync(id);
+            var patient = await _managementService.GetPatientAsync(id);
 
             if (patient is null)
             {
@@ -42,7 +42,7 @@ namespace CapstoneBackend.Controllers
         [HttpGet("Doctor")]
         public async Task<ActionResult<Patient>> GetPatientWithTheDoctor(string id)
         {
-            var patient = await _patientService.GetPatientWithTheSpecifiedDoctor(id);
+            var patient = await _managementService.GetPatientByDoctor(id);
 
             if (patient is null)
             {
@@ -56,7 +56,7 @@ namespace CapstoneBackend.Controllers
         [EnableCors]
         public async Task<IActionResult> Post(Patient newPatient)
         {
-            await _patientService.CreateAsync(newPatient);
+            await _managementService.CreatePatientAsync(newPatient);
 
             return CreatedAtAction(nameof(Get), new { id = newPatient.Id }, newPatient);
         }
@@ -65,14 +65,14 @@ namespace CapstoneBackend.Controllers
         [EnableCors]
         public async Task<IActionResult> Update(string id, Patient updatedPatient)
         {
-            var patient = await _patientService.GetAsync(id);
+            var patient = await _managementService.GetPatientAsync(id);
 
             if (patient is null)
             {
                 return NotFound();
             }
 
-            await _patientService.UpdateAsync(id, updatedPatient);
+            await _managementService.UpdatePatientAsync(id, updatedPatient);
 
             return NoContent();
         }
@@ -81,14 +81,14 @@ namespace CapstoneBackend.Controllers
         [EnableCors]
         public async Task<IActionResult> Delete(string id)
         {
-            var patient = await _patientService.GetAsync(id);
+            var patient = await _managementService.GetPatientAsync(id);
 
             if (patient is null)
             {
                 return NotFound();
             }
 
-            await _patientService.RemoveAsync(patient);
+            await _managementService.RemovePatientAsync(patient);
 
             return NoContent();
         }
