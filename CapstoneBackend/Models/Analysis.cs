@@ -80,7 +80,7 @@ namespace CapstoneBackend.Models
         private List<int> localMaxes(List<double> acceleration, int lo, int hi)
         {
             List<int> maxes = new List<int>();
-            for (int j = lo; j < hi; j++)
+            for (int j = lo+1; j < hi-1; j++)
             {
                 if (acceleration[j] > acceleration[j - 1] && acceleration[j] > acceleration[j + 1])
                 {
@@ -93,7 +93,7 @@ namespace CapstoneBackend.Models
         private List<int> localMins(List<double> acceleration, int lo, int hi)
         {
             List<int> mins = new List<int>();
-            for (int j = lo; j < hi; j++)
+            for (int j = lo+1; j < hi-1; j++)
             {
                 if (acceleration[j] < acceleration[j - 1] && acceleration[j] < acceleration[j + 1])
                 {
