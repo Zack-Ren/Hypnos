@@ -19,7 +19,10 @@ import {
 import { loginDoctor } from '../Requests/LoginDoctor';
 import './Login.css';
 
-
+/**
+ * Component Manages Login Process. Re-directs to '/register'. Sets UserContext.
+ * @returns Login Component
+ */
 export const Login: FunctionComponent = () => {
   // State Management
   const [username, setUsername] = useState<string>('');
@@ -45,6 +48,9 @@ export const Login: FunctionComponent = () => {
       setPassword(e.target.value);
   };
 
+  /**
+   * Handles Login Process. Manges isLoading and loginError state.
+   */
   const loginHandler = async () => {
     try {
       setIsLoading(true);
@@ -56,8 +62,6 @@ export const Login: FunctionComponent = () => {
         setIsLoading(false);
     }
   }
-
-
 
   // Component Rendering
     return (
