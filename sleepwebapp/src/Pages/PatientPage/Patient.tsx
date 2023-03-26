@@ -1,9 +1,13 @@
 import { Button, ChatIcon, Divider, EmailIcon, Flex, Header, Image, Loader, Segment, Text } from "@fluentui/react-northstar"
+import { AxiosResponse } from "axios";
 import { FunctionComponent, useContext, useEffect, useState } from "react"
 import { useLocation } from "react-router-dom";
 import { DoctorContext } from "../../Components/DoctorProviderComponent/Context";
 import { NavBar } from "../../Components/NavBarComponent/NavBar";
+import { Notes } from "../../Components/NotesComponent/Notes";
+import { Event } from "../../Models/Event";
 import { Patient } from "../../Models/Patient";
+import { getEventByPatient } from "../../Requests/GetEventByPatient";
 import { getPatient } from "../../Requests/GetPatient";
 
 /**
@@ -13,19 +17,22 @@ import { getPatient } from "../../Requests/GetPatient";
 export const PatientComponent: FunctionComponent = () => {
     // State
     const [patient, setPatient] = useState<Patient | null>(null);
+    const [events, setEvents] = useState<Event[]>([]);
     
     // Hooks
     const location = useLocation();
     const {doctor} = useContext(DoctorContext);
-    const patientId = location.pathname.split('/')[2]
+    const patientId: string = location.pathname.split('/')[2]
 
     useEffect(() => {
-        const getPatientById = async () => {
-            const patient = await getPatient(patientId);
+        const getData = async () => {
+            const patient: AxiosResponse<Patient, any> = await getPatient(patientId);
             setPatient(patient.data);
+            const events: AxiosResponse<Event[], any> = await getEventByPatient(patientId);
+            setEvents(events.data);
         }
 
-        getPatientById();
+        getData();
     }, [patientId]);
 
     if (patient === null){
@@ -109,9 +116,8 @@ export const PatientComponent: FunctionComponent = () => {
                         </Segment>
                     </Flex>
                     <Flex>
-                        <Segment>
-                            Events
-                        </Segment>
+                        {events.length > 0 ? <Notes event={events[0]} /> : <Loader size="largest" />}
+                        
                     </Flex>
                 </Flex>
             </Flex>
