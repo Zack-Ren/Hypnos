@@ -19,7 +19,7 @@ namespace CapstoneBackend.Controllers
 
         [HttpGet]
         public async Task<List<Event>> Get() =>
-            await _managementService.GetEventAsync();
+            await _managementService.GetEventsAsync();
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Event>> Get(string id)

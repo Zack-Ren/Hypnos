@@ -40,7 +40,7 @@ namespace CapstoneBackend.Controllers
         }
 
         [HttpGet("Doctor")]
-        public async Task<ActionResult<Patient>> GetPatientWithTheDoctor(string id)
+        public async Task<ActionResult<List<Patient>>> GetPatientWithTheDoctor(string id)
         {
             var patient = await _managementService.GetPatientByDoctor(id);
 

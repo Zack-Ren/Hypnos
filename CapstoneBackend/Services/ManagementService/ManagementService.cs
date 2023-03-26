@@ -84,12 +84,12 @@ namespace CapstoneBackend.Services
         /// <param name="updatedDoctor">Represents the doctor with the updated fields</param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task UpdateDoctorAsync(string originalDoctorId, Doctor updatedDoctor)
+        public async Task UpdateDoctorAsync(string originalDoctorId, Doctor updatedDoctor, bool newPatientCreationScenario = false)
         {
             Doctor originalDoctor = await this.ValidateDoctor(originalDoctorId, "Doctor could not be updated.");
 
             // If the setOfPatients was updated, validate it
-            if (!originalDoctor.SetOfPatients.SetEquals(updatedDoctor.SetOfPatients))
+            if (!originalDoctor.SetOfPatients.SetEquals(updatedDoctor.SetOfPatients) && !newPatientCreationScenario)
             {
                 await this.ValidateSetOfPatients(updatedDoctor.SetOfPatients);
             }
@@ -173,8 +173,8 @@ namespace CapstoneBackend.Services
         /// </summary>
         /// <param name="doctorId">Represents the doctorId</param>
         /// <returns></returns>
-        public async Task<Patient?> GetPatientByDoctor(string doctorId) =>
-            await _patientCollection.Find(patient => patient.DoctorId == doctorId).FirstOrDefaultAsync();
+        public async Task<List<Patient>> GetPatientByDoctor(string doctorId) =>
+            await _patientCollection.Find(patient => patient.DoctorId == doctorId).ToListAsync();
 
 
         /// <summary>
@@ -189,6 +189,8 @@ namespace CapstoneBackend.Services
             if (newPatient.DoctorId != null)
             {
                 Doctor doctor = await this.ValidateDoctor(newPatient.DoctorId, "Patient cannot be created.");
+                doctor.SetOfPatients.Add(newPatient.Id);
+                await this.UpdateDoctorAsync(newPatient.DoctorId, doctor, true);
             }
 
             await _patientCollection.InsertOneAsync(newPatient);
