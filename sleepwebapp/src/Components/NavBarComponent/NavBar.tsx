@@ -1,52 +1,28 @@
 import { FunctionComponent } from 'react';
-import { Flex, Header, Text, Button, Menu, MenuItemProps } from '@fluentui/react-northstar';
+import { Flex, Header, Text, Menu, } from '@fluentui/react-northstar';
 import { NavLink } from 'react-router-dom';
 import { TenantPersonalIcon, ToDoListIcon, ContactGroupIcon, ChatIcon, SettingsIcon, PersonIcon } from '@fluentui/react-icons-northstar';
 
-type NavItem = {
-  key: string;
-  label: string;
-  to: string;
-  icon: JSX.Element;
-};
-
-const navItems: NavItem[] = [
-  { key: 'home', label: 'Home', to: '/', icon: <TenantPersonalIcon color='brand'/> },
-  { key: 'patients', label: 'Patients', to: '/patients', icon: <ContactGroupIcon color='brand'/> },
-  { key: 'todo', label: 'To-Do', to: '/todo', icon: <ToDoListIcon color='brand'/> },
-  { key: 'chat', label: 'Chat', to: '/chat', icon: <ChatIcon /> },
-  { key: 'settings', label: 'Settings', to: '/settings', icon: <SettingsIcon /> },
-  { key: 'profile', label: 'Profile', to: '/profile', icon: <PersonIcon /> },
-];
-
+/**
+ * Represents the navigation bar that will be shown on the main pages
+ * @returns 
+ */
 export const NavBar: FunctionComponent = () => {
-    const menuItems: MenuItemProps[] = navItems.map((item) => ({
-    key: item.key,
-    icon: (item.icon),
-    content: item.label,
-    as: NavLink,
-    to: item.to,
-    activeClassName: 'active',
-  }));
+    // Navigation Bar Items
+    const menuItems = [
+        { key: 'home', content: 'Home', to: '/home', icon: <TenantPersonalIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
+        { key: 'patients', content: 'Patients', to: '/patients', icon: <ContactGroupIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
+        { key: 'todo', content: 'To-Do', to: '/todo', icon: <ToDoListIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
+        { key: 'chat', content: 'Chat', to: '/chat', icon: <ChatIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
+        { key: 'settings', content: 'Settings', to: '/settings', icon: <SettingsIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
+        { key: 'profile', content: 'Profile', to: '/profile', icon: <PersonIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
+    ];
 
-  return (
-    <Flex style={{ height: '100%' }}>
-      <Flex.Item size="size.quarter" styles={{ backgroundColor: '#f8f8f8' }}>
-        <Flex column gap="gap.medium">
-          <Flex.Item>
-            <Header>
-              <Text size="larger" weight="bold" content="My App" />
-            </Header>
-          </Flex.Item>
-          <Flex.Item>
-            <Menu vertical defaultActiveIndex={0} items={menuItems} styles={{ width: '98%'}}/>
-          </Flex.Item>
+    // Rendering Components
+    return (
+        <Flex column className='navbar-container' gap="gap.small" styles={{backgroundColor: 'red'}}>
+            <Header content="Hypnosos" />
+            <Menu defaultActiveIndex={0} items={menuItems} styles={{ width: '98%', height: '100%', fontSize: '20px', color: 'black'}} vertical pointing primary/>
         </Flex>
-      </Flex.Item>
-      <Flex.Item size="size.threeQuarter" styles={{ padding: '1rem' }}>
-        {/* Add your content here */}
-        <Text content="Welcome to My App!" size="larger" />
-      </Flex.Item>
-    </Flex>
-  );
+    );
 };
