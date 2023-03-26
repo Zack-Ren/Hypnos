@@ -11,7 +11,6 @@ export const NavBar: FunctionComponent = () => {
     // Navigation Bar Items
     const menuItems = [
         { key: 'home', content: 'Home', to: '/home', icon: <TenantPersonalIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
-        { key: 'patients', content: 'Patients', to: '/patients', icon: <ContactGroupIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
         { key: 'todo', content: 'To-Do', to: '/todo', icon: <ToDoListIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
         { key: 'chat', content: 'Chat', to: '/chat', icon: <ChatIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
         { key: 'settings', content: 'Settings', to: '/settings', icon: <SettingsIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
@@ -20,7 +19,7 @@ export const NavBar: FunctionComponent = () => {
 
     // Rendering Components
     return (
-        <Flex column className='navbar-container' gap="gap.small" styles={{backgroundColor: 'red'}}>
+        <Flex column className='navbar-container' gap="gap.small">
             <Header content="Hypnosos" />
             <Menu defaultActiveIndex={0} items={menuItems} styles={{ width: '98%', height: '100%', fontSize: '20px', color: 'black'}} vertical pointing primary/>
         </Flex>

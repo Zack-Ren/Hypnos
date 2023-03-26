@@ -1,5 +1,6 @@
-import { Avatar, Button, Card, DownloadIcon, Flex, Grid, MoreIcon, Segment, StarIcon, Text, Image, ChatIcon, TrashCanIcon, EditIcon, ArrowDownIcon, EmailIcon, PersonIcon } from "@fluentui/react-northstar";
+import { Avatar, Button, Card, Flex, Text, ChatIcon, EmailIcon, PersonIcon } from "@fluentui/react-northstar";
 import { FunctionComponent } from "react";
+import { useNavigate } from "react-router-dom";
 import { Patient } from "../../Models/Patient";
 
 interface IPatientCardProps {
@@ -11,6 +12,7 @@ interface IPatientCardProps {
  * @returns 
  */
 export const PatientCard: FunctionComponent<IPatientCardProps> = (props: IPatientCardProps) => {
+  const navigate = useNavigate();
   return (
       <Card aria-roledescription="card avatar">
         <Card.Header fitted>
@@ -18,7 +20,7 @@ export const PatientCard: FunctionComponent<IPatientCardProps> = (props: IPatien
             <Avatar
               image={props.patient.picture}
               name={props.patient.name}
-              status="unknown"
+              status="success"
             />
             <Flex column gap="gap.smaller">
               <Text content={props.patient.name} weight="bold" />
@@ -27,7 +29,7 @@ export const PatientCard: FunctionComponent<IPatientCardProps> = (props: IPatien
             <Flex column>
                 <Flex gap="gap.smaller">
                   <Button icon={<ChatIcon />} text title="Chat" size="small" primary circular/>
-                  <Button icon={<PersonIcon />} content="Profile" title="Profile" size="small" primary/>
+                  <Button icon={<PersonIcon />} content="Profile" title="Profile" size="small" primary onClick={() => navigate(`/patient/${props.patient.id}`)}/>
                 </Flex>
               <Flex gap="gap.smaller">
                 <Button icon={<EmailIcon />} text size="small" primary circular/>

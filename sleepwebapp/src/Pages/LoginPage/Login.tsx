@@ -72,7 +72,7 @@ export const Login: FunctionComponent = () => {
   // Component Rendering
     return (
       <div className='login-container'>
-          <Card size='largest' styles={{ width: '100%' , backgroundColor: 'lightblue'}}>
+          <Card size='largest' styles={{ width: '100%' }}>
                 <Flex column gap='gap.large'>
                     <CardHeader>
                         <Flex

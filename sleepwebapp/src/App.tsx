@@ -1,14 +1,30 @@
-import { useState, createContext } from 'react';
+import { useContext } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Login } from './Pages/Login';
+import { DoctorContext } from './Components/DoctorProviderComponent/Context';
+import { DoctorProvider } from './Components/DoctorProviderComponent/DoctorProvider';
+import { ProtectedRoutes } from './Components/ProtectedRoutes/ProtectedRoutes';
+import { Home } from './Pages/HomePage/Home';
+import { Login } from './Pages/LoginPage/Login';
+import { PatientComponent } from './Pages/PatientPage/Patient';
+import { Register } from './Pages/RegisterPage/Register';
 
 function App() {
+  const {doctor, isLoggedIn} = useContext(DoctorContext);
+  
     return (
-      <BrowserRouter>
-        <Routes>
-            <Route path='/login' element={<Login />}/>
-        </Routes>
-      </BrowserRouter>
+      <DoctorProvider>
+          <BrowserRouter>
+          <Routes>
+              <Route path='/login' element={<Login />}/>
+              <Route path='/register' element={<Register />}/>
+
+              <Route element={<ProtectedRoutes />}>
+                <Route path='/home' element={<Home />}/>
+                <Route path='/patient/:id' element={<PatientComponent />} />
+              </Route>
+          </Routes>
+        </BrowserRouter>
+      </DoctorProvider>
   );
 }
 
