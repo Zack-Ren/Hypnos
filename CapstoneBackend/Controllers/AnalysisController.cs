@@ -25,7 +25,7 @@ namespace CapstoneBackend.Controllers
             }
 
             Analysis analysis = new Analysis(diagnostics);
-            analysis.findSleepPositions(analysis.AccelerationX, analysis.AccelerationZ, analysis.SleepPositions);
+            analysis.findSleepPositions(analysis.AccelerationX, analysis.AccelerationZ, analysis.SleepPositions, analysis.SleepPositionFractions);
             analysis.findBreathingRates(analysis.AccelerationY, analysis.BreathingRates, analysis.WindowLength);
 
             return analysis;
