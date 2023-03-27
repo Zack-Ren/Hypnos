@@ -20,7 +20,6 @@ function App() {
               <Route path='/register' element={<Register />}/>
 
               <Route element={<ProtectedRoutes />}>
-                <Route path='/home' element={<Home />}/>
                 <Route path='/homeV2' element={<HomeV2 />}/>
                 <Route path='/patient/:id' element={<PatientComponent />} />
               </Route>
