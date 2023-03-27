@@ -4,7 +4,8 @@ import { FunctionComponent, useContext, useEffect, useState } from "react"
 import { useLocation } from "react-router-dom";
 import { DoctorContext } from "../../Components/DoctorProviderComponent/Context";
 import { NavBar } from "../../Components/NavBarComponent/NavBar";
-import { Notes } from "../../Components/NotesComponent/Notes";
+import { EventComponent } from "../../Components/EventComponent/EventComponent";
+import { Diagnostics } from "../../Models/Diagnostics";
 import { Event } from "../../Models/Event";
 import { Patient } from "../../Models/Patient";
 import { getEventByPatient } from "../../Requests/GetEventByPatient";
@@ -28,8 +29,8 @@ export const PatientComponent: FunctionComponent = () => {
         const getData = async () => {
             const patient: AxiosResponse<Patient, any> = await getPatient(patientId);
             setPatient(patient.data);
-            const events: AxiosResponse<Event[], any> = await getEventByPatient(patientId);
-            setEvents(events.data);
+            const eventsResponse: AxiosResponse<Event[], any> = await getEventByPatient(patientId);
+            setEvents(eventsResponse.data);
         }
 
         getData();
@@ -41,11 +42,11 @@ export const PatientComponent: FunctionComponent = () => {
         )
     }
     return (
-        <Flex className="patientPage-container" fill styles={{backgroundColor: 'red'}}>
+        <Flex className="patientPage-container" fill>
             <NavBar />
             <Flex fill column>
                 <Header content="Patient Page" color="brand" />
-                <Flex fill column gap="gap.large" styles={{backgroundColor: 'blue'}}>
+                <Flex fill column gap="gap.large">
                     <Flex className="patientProfile-container">
                         <Segment styles={{width: '100%'}}>
                             <Flex gap="gap.large">
@@ -116,7 +117,7 @@ export const PatientComponent: FunctionComponent = () => {
                         </Segment>
                     </Flex>
                     <Flex>
-                        {events.length > 0 ? <Notes event={events[0]} /> : <Loader size="largest" />}
+                        {events.length > 0 ? events.map((event) => <EventComponent event={event} />) : <Loader size="largest" />}
                         
                     </Flex>
                 </Flex>
