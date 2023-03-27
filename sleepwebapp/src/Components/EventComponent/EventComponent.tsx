@@ -42,9 +42,8 @@ export const EventComponent: FunctionComponent<IEventComponentProps> = (props: I
         await updateEvent(props.event.id, updatedEvent);
     }
 
-    console.log(props);
+    // Logic
     const eventDate = toLocalDateTime(props.event.eventTime).split('-')[0];
-    console.log(eventDate);
 
     // Rendering Components
     return (

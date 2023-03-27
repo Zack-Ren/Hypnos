@@ -3,13 +3,16 @@ import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 import { Patient } from "../../Models/Patient";
 
+/**
+ * Prop interface for PatientCard component
+ */
 interface IPatientCardProps {
   patient: Patient
 }
 /**
  * Represents the PatientCard that is shown on the Patients Page
- * @param props 
- * @returns 
+ * @param props Contains a patient as the only prop
+ * @returns A PatientCard
  */
 export const PatientCard: FunctionComponent<IPatientCardProps> = (props: IPatientCardProps) => {
   const navigate = useNavigate();

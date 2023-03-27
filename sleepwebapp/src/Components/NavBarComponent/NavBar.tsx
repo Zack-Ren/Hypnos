@@ -5,7 +5,7 @@ import { TenantPersonalIcon, ToDoListIcon, ChatIcon, SettingsIcon, PersonIcon } 
 
 /**
  * Represents the navigation bar that will be shown on the main pages
- * @returns 
+ * @returns A Side-Vertical-Navigation Bar
  */
 export const NavBar: FunctionComponent = () => {
     // Navigation Bar Items
