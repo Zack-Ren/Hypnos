@@ -7,7 +7,8 @@ import { Patient } from "../../Models/Patient";
  * Prop interface for PatientCard
  */
 interface IPatientCardProps {
-  patient: Patient
+  patient: Patient;
+  index: number;
 }
 /**
  * Represents the PatientCard that is shown on the Patients Page
@@ -16,18 +17,19 @@ interface IPatientCardProps {
  */
 export const PatientCardV2: FunctionComponent<IPatientCardProps> = (props: IPatientCardProps) => {
   const navigate = useNavigate();
-
+  const isPrimary = props.index%2 === 0 ? true : false
+  
   return (
-    <Segment color="brand">
+    <Segment color="brand" inverted={isPrimary}>
         <Flex space="between">
             <Flex gap="gap.medium" vAlign="center">
                 <Avatar name={props.patient.name} image={props.patient.picture} size="larger" />
                 <Text weight="bold" size="largest" content={props.patient.name} />
             </Flex>
-            <Flex gap="gap.small" vAlign="center">
-                <Button icon={<ChatIcon size="largest"/>} text title="Chat" size="small" primary circular />
-                <Button icon={<EmailIcon size="largest"/>} text title="Email" size="small" primary circular/>
-                <Button icon={<PersonIcon size="largest" />} text title="Profile" size="small" primary circular onClick={() => navigate(`/patient/${props.patient.id}`)}/>
+            <Flex gap="gap.large" vAlign="center">
+                <Button icon={<ChatIcon size="largest"/>}  title="Chat" size="small" primary={isPrimary} circular />
+                <Button icon={<EmailIcon size="largest"/>}  title="Email" size="small" primary={isPrimary} circular/>
+                <Button icon={<PersonIcon size="largest" />} title="Profile" size="small" primary={isPrimary} circular onClick={() => navigate(`/patient/${props.patient.id}`)}/>
             </Flex>
         </Flex>
     </Segment>

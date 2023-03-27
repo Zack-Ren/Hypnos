@@ -29,15 +29,13 @@ export const HomeV2: FunctionComponent = () => {
         
     }, [doctor])
 
-    let patientColumn = patients.map((patient) => {
+    let patientColumn = patients.map((patient, index) => {
         return (
             <>
-                <PatientCardV2 patient={patient} />
+                <PatientCardV2 patient={patient} index={index}/>
             </>
         )
     })
-
-        patientColumn.push(...patientColumn);
 
     // Rendering Component
     return (
