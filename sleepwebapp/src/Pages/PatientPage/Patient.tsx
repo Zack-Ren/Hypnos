@@ -10,6 +10,7 @@ import { Patient } from "../../Models/Patient";
 import { getEventByPatient } from "../../Requests/GetEventByPatient";
 import { getPatient } from "../../Requests/GetPatient";
 import { createEvent } from "../../Requests/CreateEvent";
+import { deleteEvent } from "../../Requests/DeleteEvent";
 
 /**
  * Represents the Patient Page
@@ -68,6 +69,29 @@ export const PatientComponent: FunctionComponent = () => {
         setIsEventCreationInProgress(false);
     }
 
+    const renderEvents = () => {
+        if (events === null) {
+            return <Loader size="largest" />
+        } else if (events.length === 0) {
+            return (
+                <Segment>
+                    <Text content="No Appointments" weight="bold" size="largest" />
+                </Segment>
+            )
+        } else {
+            /**
+             * An handler that also processes an Delete Request
+             */
+            const deleteEventOnClickHandler = async (eventId: string) => {
+                await deleteEvent(eventId);
+                const updatedEventsArray = events?.filter((value) => value.id !== eventId);
+                setEvents(updatedEventsArray);
+            }
+
+            return events.map((event) => <EventComponent event={event} deleteEventCallback={deleteEventOnClickHandler}/>)
+        }
+    }
+
     return (
         <Flex className="patientPage-container" fill>
             <NavBar />
@@ -108,7 +132,7 @@ export const PatientComponent: FunctionComponent = () => {
                                     </Flex>
                                 </Flex>
                                 </Flex>
-                                <Flex space="between">
+                                <Flex space="between" gap="gap.small">
                                     <Button content="Create New Appointment" tinted onClick={() => createEventOnClickHandler()}/>
                                     <Button content="Chat" disabled tinted title="Chat" size="medium"/>
                                     <Button content="Email" disabled tinted title="Chat" size="medium"/>
@@ -117,7 +141,7 @@ export const PatientComponent: FunctionComponent = () => {
                         </Segment>
                     </Flex>
                     <Flex column>
-                        {events === null || isEventCreationInProgress ? <Loader size="largest" /> : events.map((event) => <EventComponent event={event} />)}                  
+                        {renderEvents()}
                     </Flex>
                 </Flex>
             </Flex>

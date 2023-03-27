@@ -1,5 +1,5 @@
-import { SaveIcon } from "@fluentui/react-icons-northstar";
-import { Card, Flex, Button, Text, TextArea, Segment, } from "@fluentui/react-northstar";
+import { SaveIcon, TrashCanIcon } from "@fluentui/react-icons-northstar";
+import { Card, Flex, Button, Text, TextArea, Segment, Dialog, } from "@fluentui/react-northstar";
 import { FunctionComponent, useState } from "react";
 import { Event } from "../../Models/Event";
 import { updateEvent } from "../../Requests/UpdateEvent";
@@ -9,6 +9,7 @@ import { toLocalDateTime } from "../../Utils/UtilityFxs";
 
 interface IEventComponentProps {
     event: Event;
+    deleteEventCallback: (eventId: string) => void;
 }
 /**
  * Represents the Event Component
@@ -55,7 +56,17 @@ export const EventComponent: FunctionComponent<IEventComponentProps> = (props: I
                             <Flex column gap="gap.small">
                                 <Text content={`${eventDate} - Appointment`} weight="bold" size="largest"/>
                             </Flex>
-                            <Button icon={<SaveIcon size="large"/>} title="Favourite" content="Save" primary onClick={saveEventOnClickHanlder}/>
+                            <Flex gap="gap.small">
+                                <Button icon={<SaveIcon size="large"/>} content="Save" primary onClick={saveEventOnClickHanlder}/>
+                                <Dialog
+                                    cancelButton="Keep"
+                                    confirmButton="Delete"
+                                    onConfirm={() => props.deleteEventCallback(props.event.id)}
+                                    content="Are you sure you want to delete data associated with this appointment? All data, including graphs, prognosis, notes and other details will be permenantly erased."
+                                    header="Appointment Deletion Confirmation"
+                                    trigger={<Button icon={<TrashCanIcon size="large"/>} content="Delete" primary/>}
+                                />
+                            </Flex>
                         </Flex>
                         
                     </Card.Header>
@@ -89,8 +100,4 @@ export const EventComponent: FunctionComponent<IEventComponentProps> = (props: I
             </Segment>
         </Flex>
     );
-}
-
-function toLocaleDateTime(eventTime: string) {
-    throw new Error("Function not implemented.");
 }
