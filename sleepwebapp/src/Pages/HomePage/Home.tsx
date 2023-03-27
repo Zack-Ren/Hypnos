@@ -28,6 +28,7 @@ export const Home: FunctionComponent = () => {
         getPatients()
         
     }, [doctor])
+    console.log(patients);
 
     // Logic
     let patientGrid = patients.map((patient, patientIndex) => {
@@ -37,8 +38,6 @@ export const Home: FunctionComponent = () => {
             </Flex>
         )
     });
-
-    patientGrid.push(...patientGrid);
 
     // Rendering Component
     return (
