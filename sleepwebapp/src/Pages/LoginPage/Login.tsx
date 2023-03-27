@@ -61,7 +61,7 @@ export const Login: FunctionComponent = () => {
       const axiosDoctorResponse: AxiosResponse<Doctor> = await loginDoctor(username, password);
       setDoctor(axiosDoctorResponse.data);
       setIsLoading(false);
-      navigate('/home');
+      navigate('/homeV2');
     } catch (error) {
         console.log('Error. Login.tsx. Error while handling login.', error);
         setLoginError(true);

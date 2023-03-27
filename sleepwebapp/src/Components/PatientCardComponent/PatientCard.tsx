@@ -40,23 +40,4 @@ export const PatientCard: FunctionComponent<IPatientCardProps> = (props: IPatien
         </Card.Header>
       </Card>
   )
-    // return (
-    //       <Card centered aria-roledescription="card with avatar, image and action buttons" styles={{maxHeight: "500px"}}>
-    //         <Card.Header>
-    //           <Image src={props.patient.picture} circular/>
-    //         </Card.Header>
-    //         <Card.Body>
-    //           <Flex column gap="gap.small">
-    //             <Text content={props.patient.email} align="center" />
-    //             <Text content={props.patient.name} weight="bold" />
-    //             <Text content={props.patient.phoneNumber} size="small" />
-
-    //           </Flex>
-    //         </Card.Body>
-    //         <Card.Footer styles={{width: "100%"}}>
-    //           <Flex space="between">
-    //           </Flex>
-    //         </Card.Footer>
-    //       </Card>
-    // );
 }
