@@ -315,23 +315,22 @@ namespace CapstoneBackend.Services
         /// <param name="doctorId">Represents the doctorId</param>
         /// <param name="patientId">Represents the patientId</param>
         /// <returns></returns>
-        public async Task<Event?> GetEventByDoctorOrPatient(string? doctorId, string? patientId)
+        public async Task<List<Event>> GetEventsByDoctorOrPatient(string? doctorId, string? patientId)
         {
             // If both are provided, perform the search for events that have both ids
             if (doctorId != null && patientId != null)
             {
-                return await _eventCollection.Find(eventEntity => eventEntity.PatientId == patientId && eventEntity.DoctorId == doctorId).FirstOrDefaultAsync();
+                return await _eventCollection.Find(eventEntity => eventEntity.PatientId == patientId && eventEntity.DoctorId == doctorId).ToListAsync();
             }
             // If only doctorId is provided, perform the search for events with the doctorId
             else if (doctorId != null && patientId == null)
             {
-                return await _eventCollection.Find(eventEntity => eventEntity.DoctorId == doctorId).FirstOrDefaultAsync();
+                return await _eventCollection.Find(eventEntity => eventEntity.DoctorId == doctorId).ToListAsync();
             }
             // If only patientId is provided, perform the search for events with the patientId
             else
             {
-                return await _eventCollection.Find(eventEntity => eventEntity.PatientId == patientId).FirstOrDefaultAsync();
-
+                return await _eventCollection.Find(eventEntity => eventEntity.PatientId == patientId).ToListAsync();
             }
         }
 
