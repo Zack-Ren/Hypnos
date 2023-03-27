@@ -47,7 +47,7 @@ export const PatientComponent: FunctionComponent = () => {
                 <Header content="Patient Page" color="brand" />
                 <Flex column gap="gap.large">
                     <Flex className="patientProfile-container">
-                        <Segment>
+                        <Segment color="brand" inverted>
                             <Flex gap="gap.large">
                                 <Image src={patient.picture} circular styles={{width: "100px"}}/>
                                 <Flex column>

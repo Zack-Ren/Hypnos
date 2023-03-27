@@ -11,6 +11,7 @@ import { getDiagnostic } from "../../Requests/GetDiagnostic";
  */
 interface IDiagnosticProps {
     diagnosticId: string;
+    index: number;
 };
 
 ChartJS.register(
@@ -131,11 +132,11 @@ export const Diagnostic: FunctionComponent<IDiagnosticProps> = (props: IDiagnost
 
     const startTime = toLocalDateTime(diagnosticData.dataAcquisitionStartTime);    
 
-
     // Rendering component
+    console.log(props);
     return (
         <>
-            <Segment color='brand' inverted>
+            <Segment color='brand' inverted={props.index%2 === 0 ? true : false}>
                 <Flex space="between">
                     <Flex vAlign="center" gap="gap.large">
                         <Text content={`${startTime}`} weight="bold" size="larger"/>
@@ -147,10 +148,13 @@ export const Diagnostic: FunctionComponent<IDiagnosticProps> = (props: IDiagnost
             {showGraph && 
             <Card fluid ghost aria-roledescription="card with avatar, image and action buttons">
                 <Card.Body>
-                    <Flex column gap="gap.medium">
-                        <Line data={accelerationData} title={"Acceleration Data"}/>
-                        <Divider />
-                        <Line data={angularAccelerationData} title={"Angular Acceleration Data"}/>
+                    <Flex fill gap="gap.medium" space="around">
+                        <Flex fill>
+                            <Line data={accelerationData} title={"Acceleration Data"}/>
+                        </Flex>
+                        <Flex fill>
+                            <Line data={angularAccelerationData} title={"Angular Acceleration Data"}/>
+                        </Flex>
                     </Flex>
                 </Card.Body>
                 <Card.Footer styles={{padding: "20px 0px 0px 0px"}}>
