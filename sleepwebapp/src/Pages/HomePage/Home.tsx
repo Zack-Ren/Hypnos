@@ -45,7 +45,7 @@ export const Home: FunctionComponent = () => {
             <NavBar />
             <Flex fill column>
                 <Header content="Patients" color="brand" />
-                <Flex wrap space="between">
+                <Flex wrap gap="gap.smaller">
                     {patientGrid.length > 0 ? patientGrid : "None" }
                 </Flex>
             </Flex>
