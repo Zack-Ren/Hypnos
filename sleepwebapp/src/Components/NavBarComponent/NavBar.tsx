@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 import { Flex, Header, Image, Menu, } from '@fluentui/react-northstar';
 import { NavLink } from 'react-router-dom';
-import { TenantPersonalIcon, ToDoListIcon, ChatIcon, SettingsIcon, PersonIcon } from '@fluentui/react-icons-northstar';
+import { TenantPersonalIcon, ToDoListIcon, ChatIcon, SettingsIcon, PersonIcon, SearchIcon } from '@fluentui/react-icons-northstar';
 import logo from '../../darkMode.png';
 /**
  * Represents the navigation bar that will be shown on the main pages
@@ -11,10 +11,11 @@ export const NavBar: FunctionComponent = () => {
     // Navigation Bar Items
     const menuItems = [
         { key: 'home', content: 'Home', to: '/homeV2', icon: <TenantPersonalIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
-        { key: 'todo', content: 'To-Do', to: '/todo', icon: <ToDoListIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
-        { key: 'chat', content: 'Chat', to: '/chat', icon: <ChatIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
-        { key: 'settings', content: 'Settings', to: '/settings', icon: <SettingsIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
-        { key: 'profile', content: 'Profile', to: '/profile', icon: <PersonIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
+        { key: 'search', content: 'Search', to: '/search', icon: <SearchIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
+        { key: 'todo', content: 'To-Do', disabled:true, to: '/todo', icon: <ToDoListIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
+        { key: 'chat', content: 'Chat', disabled:true, to: '/chat', icon: <ChatIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
+        { key: 'settings', content: 'Settings', disabled:true, to: '/settings', icon: <SettingsIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
+        { key: 'profile', content: 'Profile', disabled:true, to: '/profile', icon: <PersonIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
     ];
 
     // Rendering Components

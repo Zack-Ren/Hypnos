@@ -10,6 +10,7 @@ import {
     Input,
     Button,
     Loader,
+    Image,
 } from '@fluentui/react-northstar';
 import {
     UserFriendsIcon,
@@ -21,6 +22,7 @@ import { loginDoctor } from '../../Requests/LoginDoctor';
 import './Login.css';
 import { AxiosResponse } from 'axios';
 import { Doctor } from '../../Models/Doctor';
+import logo from '../../darkMode.png';
 
 /**
  * Component Manages Login Process. Re-directs to '/register'. Sets UserContext.
@@ -81,7 +83,7 @@ export const Login: FunctionComponent = () => {
                                 color: siteVariables.colorScheme.brand
                                     .foreground,
                             })}>
-                            <UserFriendsIcon size='largest' color='brand' />
+                            <Image fluid src={logo} styles={{maxWidth: "200px", maxHeight:"200px", padding: "20px 10px 0px 0px"}}/>
                         </Flex>
                     </CardHeader>
                     <CardBody>
@@ -105,6 +107,7 @@ export const Login: FunctionComponent = () => {
                                 placeholder={'Password'}
                                 value={password}
                                 error={loginError}
+                                type="password"
                                 onClick={() =>
                                     setLoginError(undefined)
                                 }

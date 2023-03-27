@@ -121,7 +121,7 @@ export const Diagnostic: FunctionComponent<IDiagnosticProps> = (props: IDiagnost
     console.log(props);
     return (
         <>
-            <Segment color='brand' inverted={props.index%2 === 0 ? true : false}>
+            <Segment color='brand'>
                 <Flex space="between">
                     <Flex vAlign="center" gap="gap.large">
                         <Text content={`${startTime}`} weight="bold" size="larger"/>
