@@ -8,5 +8,6 @@ export interface Person {
     name: string,
     phoneNumber: number,
     email: string,
-    picture?: string,
+    picture: string,
+    birthday: string
 }

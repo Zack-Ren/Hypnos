@@ -1,9 +1,11 @@
 import { SaveIcon } from "@fluentui/react-icons-northstar";
-import { Card, Flex, Button, Text, TextArea, Divider, Segment, } from "@fluentui/react-northstar";
+import { Card, Flex, Button, Text, TextArea, Segment, } from "@fluentui/react-northstar";
 import { FunctionComponent, useState } from "react";
 import { Event } from "../../Models/Event";
 import { updateEvent } from "../../Requests/UpdateEvent";
 import { Diagnostic } from "../DiagnosticComponent/Diagnostic";
+import { toLocalDateTime } from "../../Utils/UtilityFxs";
+
 
 interface IEventComponentProps {
     event: Event;
@@ -40,6 +42,10 @@ export const EventComponent: FunctionComponent<IEventComponentProps> = (props: I
         await updateEvent(props.event.id, updatedEvent);
     }
 
+    console.log(props);
+    const eventDate = toLocalDateTime(props.event.eventTime).split('-')[0];
+    console.log(eventDate);
+
     // Rendering Components
     return (
         <Flex column fill gap="gap.large">
@@ -48,8 +54,7 @@ export const EventComponent: FunctionComponent<IEventComponentProps> = (props: I
                     <Card.Header>
                         <Flex space="between">
                             <Flex column gap="gap.small">
-                                <Text content="Appointment Notes" weight="bold" size="largest"/>
-                                <Text content="12/20/2023" weight="light" size="small" />
+                                <Text content={`${eventDate} - Appointment`} weight="bold" size="largest"/>
                             </Flex>
                             <Button icon={<SaveIcon size="large"/>} title="Favourite" content="Save" primary onClick={saveEventOnClickHanlder}/>
                         </Flex>
@@ -85,4 +90,8 @@ export const EventComponent: FunctionComponent<IEventComponentProps> = (props: I
             </Segment>
         </Flex>
     );
+}
+
+function toLocaleDateTime(eventTime: string) {
+    throw new Error("Function not implemented.");
 }

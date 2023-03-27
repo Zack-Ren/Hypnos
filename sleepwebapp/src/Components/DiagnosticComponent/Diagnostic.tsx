@@ -1,10 +1,11 @@
-import { AddIcon, Button, Card, Divider, ErrorIcon, Flex, Loader, Segment, Text, Tooltip, WindowMinimizeIcon } from "@fluentui/react-northstar";
+import { AddIcon, Button, Card, ErrorIcon, Flex, Loader, Segment, Text, WindowMinimizeIcon } from "@fluentui/react-northstar";
 import { AxiosResponse } from "axios";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Legend } from "chart.js";
 import { FunctionComponent, useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { Diagnostics } from "../../Models/Diagnostics";
 import { getDiagnostic } from "../../Requests/GetDiagnostic";
+import { toLocalDateTime } from "../../Utils/UtilityFxs";
 
 /**
  * Interface for Diagnostic Props
@@ -57,22 +58,6 @@ export const Diagnostic: FunctionComponent<IDiagnosticProps> = (props: IDiagnost
             newArr.push(i);
         } 
         return newArr;
-    }
-
-    /**
-     * Converts date string to year/month/day - time format
-     * @param dateString Represents datestring of datetime object
-     * @returns string in the year/month/day - time format
-     */
-    const toLocalDateTime = (dateString: string) => {
-        const date = new Date(dateString);
-        //const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        //const dayOfWeek = weekdays[date.getUTCDay()];
-        const year = date.getUTCFullYear();
-        const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-        const day = String(date.getUTCDate()).padStart(2, '0');
-        const time = date.toISOString().slice(11,19);
-        return `${year}/${month}/${day} - ${time}`;    
     }
 
     if (diagnosticData === null) {
@@ -146,7 +131,7 @@ export const Diagnostic: FunctionComponent<IDiagnosticProps> = (props: IDiagnost
                 </Flex>
             </Segment>
             {showGraph && 
-            <Card fluid ghost aria-roledescription="card with avatar, image and action buttons">
+            <Card fluid aria-roledescription="card with avatar, image and action buttons">
                 <Card.Body>
                     <Flex fill gap="gap.medium" space="around">
                         <Flex fill>
