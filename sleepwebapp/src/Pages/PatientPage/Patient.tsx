@@ -1,11 +1,10 @@
-import { Button, ChatIcon, Divider, EmailIcon, Flex, Header, Image, Loader, Segment, Text } from "@fluentui/react-northstar"
+import { Button, ChatIcon, Divider, EmailIcon, Flex, Header, Image, Loader, PhoneIcon, Segment, Text } from "@fluentui/react-northstar"
 import { AxiosResponse } from "axios";
 import { FunctionComponent, useContext, useEffect, useState } from "react"
 import { useLocation } from "react-router-dom";
 import { DoctorContext } from "../../Components/DoctorProviderComponent/Context";
 import { NavBar } from "../../Components/NavBarComponent/NavBar";
 import { EventComponent } from "../../Components/EventComponent/EventComponent";
-import { Diagnostics } from "../../Models/Diagnostics";
 import { Event } from "../../Models/Event";
 import { Patient } from "../../Models/Patient";
 import { getEventByPatient } from "../../Requests/GetEventByPatient";
@@ -46,9 +45,9 @@ export const PatientComponent: FunctionComponent = () => {
             <NavBar />
             <Flex fill column>
                 <Header content="Patient Page" color="brand" />
-                <Flex fill column gap="gap.large">
+                <Flex column gap="gap.large">
                     <Flex className="patientProfile-container">
-                        <Segment styles={{width: '100%'}}>
+                        <Segment>
                             <Flex gap="gap.large">
                                 <Image src={patient.picture} circular styles={{width: "100px"}}/>
                                 <Flex column>
@@ -56,69 +55,37 @@ export const PatientComponent: FunctionComponent = () => {
                                         <Flex column>
                                             <Text content={patient.name} weight="bold" />
                                             <Flex gap="gap.large">
-                                                <Text content={patient.email} weight="light" />
-                                                <Text content={patient.phoneNumber} weight="light" />
+                                                <Flex vAlign="center" gap="gap.small">
+                                                    <EmailIcon size="small" color="brand"/>
+                                                    <Text content={patient.email} weight="light" />
+                                                </Flex>
+                                                <Flex vAlign="center" gap="gap.small">
+                                                    <PhoneIcon size="small" color="brand"/>
+                                                    <Text content={patient.phoneNumber} weight="light" />
+                                                </Flex>
                                             </Flex>
-                                        </Flex>
-                                        <Flex>
-                                            <Button content={<ChatIcon />} text primary circular />
-                                            <Button content={<EmailIcon />} text primary circular />
                                         </Flex>
                                     </Flex>
                                     <Divider/>
-                                    <Flex gap="gap.medium">
+                                    <Flex gap="gap.medium" space="between">
                                         <Flex column>
-                                            <Text content="Scheduled Appt" weight="light" />
-                                            <Text content="14 Mar 2021" weight='regular' />
+                                            <Text content="Referring Doctor" weight="semibold" />
+                                            <Text content={doctor?.name} weight="regular" />
                                         </Flex>
                                         <Flex column>
-                                            <Text content="Special Notes" weight="light" />
-                                            <Text content="Patient is Deaf. Talk to wife" weight='regular' />
+                                            <Text content="Treatment Address" weight="semibold" />
+                                            <Text content={doctor?.clinicAddress} weight="regular" />
                                         </Flex>
                                     </Flex>
                                 </Flex>
-
+                                <Flex column vAlign="center">
+                                    <Button icon={<ChatIcon size="larger"/>} text title="Chat" size="medium" primary circular/>
+                                </Flex>
                             </Flex>   
-                            <Divider />
-                            <Flex column gap="gap.large">
-                                <Flex gap='gap.large'>
-                                    <Flex column>
-                                        <Text content="GUID" weight="light" />
-                                        <Text content={patient.id} weight="regular" />
-                                    </Flex>
-                                    <Flex column>
-                                        <Text content="Expiry Date" weight="light" />
-                                        <Text content={"12/07/2023"} weight="regular" />
-                                    </Flex>
-                                    <Flex column>
-                                        <Text content="Treatment Address" weight="light" />
-                                        <Text content={doctor?.clinicAddress} weight="regular" />
-                                    </Flex>
-                                </Flex>
-                                <Flex gap="gap.large">
-                                    <Flex column>
-                                        <Text content="Referring Doctor" weight="light" />
-                                        <Text content='Dr. Aditya Sharma' weight="regular" />
-                                    </Flex>
-                                    <Flex column>
-                                        <Text content="Assigned Doctor" weight="light" />
-                                        <Text content={doctor?.name} weight="regular" />
-                                    </Flex>
-                                    <Flex column>
-                                        <Text content="Family Doctor" weight="light" />
-                                        <Text content='Dr. Zack Ren' weight="regular" />
-                                    </Flex>
-                                    <Flex column>
-                                        <Text content="Pharmacy Name" weight="light" />
-                                        <Text content={doctor?.clinicAddress} weight="regular" />
-                                    </Flex>
-                                </Flex>
-                            </Flex>
                         </Segment>
                     </Flex>
                     <Flex>
-                        {events.length > 0 ? events.map((event) => <EventComponent event={event} />) : <Loader size="largest" />}
-                        
+                        {events.length > 0 ? events.map((event) => <EventComponent event={event} />) : <Loader size="largest" />}                  
                     </Flex>
                 </Flex>
             </Flex>

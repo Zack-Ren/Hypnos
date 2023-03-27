@@ -41,7 +41,7 @@ export const Diagnostic: FunctionComponent<IDiagnosticProps> = (props: IDiagnost
         }
 
         getDiagnosticData();
-    },[props.diagnosticId]);
+    },[props.diagnosticId, props]);
 
     // Auxillary Functions (logic)
 

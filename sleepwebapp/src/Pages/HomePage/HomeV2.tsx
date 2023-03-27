@@ -39,7 +39,7 @@ export const HomeV2: FunctionComponent = () => {
 
         patientColumn.push(...patientColumn);
 
-        // Rendering Component
+    // Rendering Component
     return (
         <Flex className="home-container" styles={{height: '100%', width: '100%'}}>
             <NavBar />

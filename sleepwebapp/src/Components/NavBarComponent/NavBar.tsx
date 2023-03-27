@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
-import { Flex, Header, Text, Menu, } from '@fluentui/react-northstar';
+import { Flex, Header, Menu, } from '@fluentui/react-northstar';
 import { NavLink } from 'react-router-dom';
-import { TenantPersonalIcon, ToDoListIcon, ContactGroupIcon, ChatIcon, SettingsIcon, PersonIcon } from '@fluentui/react-icons-northstar';
+import { TenantPersonalIcon, ToDoListIcon, ChatIcon, SettingsIcon, PersonIcon } from '@fluentui/react-icons-northstar';
 
 /**
  * Represents the navigation bar that will be shown on the main pages

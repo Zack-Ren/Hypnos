@@ -1,5 +1,5 @@
 import { SaveIcon } from "@fluentui/react-icons-northstar";
-import { Card, Flex, Button, Text, TextArea, Accordion, Segment, AccordionTitle, AccordionContent, Divider } from "@fluentui/react-northstar";
+import { Card, Flex, Button, Text, TextArea, Divider, } from "@fluentui/react-northstar";
 import { FunctionComponent, useState } from "react";
 import { Event } from "../../Models/Event";
 import { updateEvent } from "../../Requests/UpdateEvent";
@@ -37,7 +37,7 @@ export const EventComponent: FunctionComponent<IEventComponentProps> = (props: I
      */
     const saveEventOnClickHanlder = async () => {
         const updatedEvent: Event = {...props.event, doctorNotes: doctorNote, patientNotes: patientNote}
-        const updateEventResponse = await updateEvent(props.event.id, updatedEvent);
+        await updateEvent(props.event.id, updatedEvent);
     }
 
     // Rendering Components

@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Flex, Text, ChatIcon, EmailIcon, PersonIcon, Segment } from "@fluentui/react-northstar";
+import { Avatar, Button, Flex, Text, ChatIcon, EmailIcon, PersonIcon, Segment } from "@fluentui/react-northstar";
 import { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
 import { Patient } from "../../Models/Patient";
