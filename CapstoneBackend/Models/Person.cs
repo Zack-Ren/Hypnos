@@ -26,7 +26,10 @@ namespace CapstoneBackend.Models
         public string Email { get; set; }
 
         [BsonElement("picture")]
-        public string? Picture { get; set; }
+        public string Picture { get; set; }
+
+        [BsonElement("birthday")]
+        public DateTime Birthday { get; set; }
 
 
     }
