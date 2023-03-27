@@ -10,7 +10,7 @@ import logo from '../../darkMode.png';
 export const NavBar: FunctionComponent = () => {
     // Navigation Bar Items
     const menuItems = [
-        { key: 'home', content: 'Home', to: '/home', icon: <TenantPersonalIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
+        { key: 'home', content: 'Home', to: '/homeV2', icon: <TenantPersonalIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
         { key: 'todo', content: 'To-Do', to: '/todo', icon: <ToDoListIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
         { key: 'chat', content: 'Chat', to: '/chat', icon: <ChatIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },
         { key: 'settings', content: 'Settings', to: '/settings', icon: <SettingsIcon color='brand' size="medium" xSpacing='after'/>, as: NavLink },

@@ -9,6 +9,7 @@ import { Event } from "../../Models/Event";
 import { Patient } from "../../Models/Patient";
 import { getEventByPatient } from "../../Requests/GetEventByPatient";
 import { getPatient } from "../../Requests/GetPatient";
+import { createEvent } from "../../Requests/CreateEvent";
 
 /**
  * Represents the Patient Page
@@ -17,7 +18,8 @@ import { getPatient } from "../../Requests/GetPatient";
 export const PatientComponent: FunctionComponent = () => {
     // State
     const [patient, setPatient] = useState<Patient | null>(null);
-    const [events, setEvents] = useState<Event[]>([]);
+    const [events, setEvents] = useState<Event[] | null>(null);
+    const [isEventCreationInProgress, setIsEventCreationInProgress] = useState<boolean>(false);
     
     // Hooks
     const location = useLocation();
@@ -35,11 +37,37 @@ export const PatientComponent: FunctionComponent = () => {
         getData();
     }, [patientId]);
 
-    if (patient === null){
+    if (patient === null || doctor === null){
         return (
             <Loader size="largest" />
         )
     }
+
+    const createEventOnClickHandler = async () => {
+        const newEvent = {
+            id: "",
+            patientId: patient.id,
+            doctorId: doctor.id,
+            patientNotes: "",
+            doctorNotes: "",
+            eventTime: new Date().toISOString(),
+            setOfDiagnostics: []
+        }
+
+        setIsEventCreationInProgress(true);
+
+        const createEventResponse = await createEvent(newEvent);
+        
+        if (events === null) {
+            setEvents([createEventResponse.data])
+        } else {
+            const updatedEventsArray = [createEventResponse.data, ...events];
+            setEvents(updatedEventsArray);
+        }
+
+        setIsEventCreationInProgress(false);
+    }
+
     return (
         <Flex className="patientPage-container" fill>
             <NavBar />
@@ -48,7 +76,8 @@ export const PatientComponent: FunctionComponent = () => {
                 <Flex column gap="gap.large">
                     <Flex className="patientProfile-container">
                         <Segment color="brand" inverted>
-                            <Flex gap="gap.large">
+                            <Flex column gap="gap.medium">
+                                <Flex gap="gap.large">
                                 <Image src={patient.picture} circular styles={{width: "100px"}}/>
                                 <Flex column>
                                     <Flex>
@@ -78,14 +107,17 @@ export const PatientComponent: FunctionComponent = () => {
                                         </Flex>
                                     </Flex>
                                 </Flex>
-                                <Flex column vAlign="center">
-                                    <Button icon={<ChatIcon size="larger"/>} text title="Chat" size="medium" primary circular/>
                                 </Flex>
-                            </Flex>   
+                                <Flex space="between">
+                                    <Button content="Create New Appointment" tinted onClick={() => createEventOnClickHandler()}/>
+                                    <Button content="Chat" disabled tinted title="Chat" size="medium"/>
+                                    <Button content="Email" disabled tinted title="Chat" size="medium"/>
+                                </Flex>
+                            </Flex>
                         </Segment>
                     </Flex>
-                    <Flex>
-                        {events.length > 0 ? events.map((event) => <EventComponent event={event} />) : <Loader size="largest" />}                  
+                    <Flex column>
+                        {events === null || isEventCreationInProgress ? <Loader size="largest" /> : events.map((event) => <EventComponent event={event} />)}                  
                     </Flex>
                 </Flex>
             </Flex>

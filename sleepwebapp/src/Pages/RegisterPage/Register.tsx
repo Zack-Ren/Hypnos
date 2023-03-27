@@ -11,7 +11,7 @@ export const Register: FunctionComponent = () => {
 
     // Rendering Components
     if (isLoggedIn) {
-        navigate('/home');
+        navigate('/homeV2');
     }
 
     return (
