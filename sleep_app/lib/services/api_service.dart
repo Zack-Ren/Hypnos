@@ -3,13 +3,14 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:sleep_app/models/data.dart';
 import 'package:sleep_app/models/doctor_model.dart';
+import 'package:sleep_app/models/event_model.dart';
 import 'package:sleep_app/models/patient_model.dart';
 import 'package:sleep_app/models/diagnostic_model.dart';
 import 'package:sleep_app/services/constants.dart';
 
 class ApiService {
   static Future<String> insertDiagnostic(DiagnosticsModel data) async {
-    var uri = Uri.parse(baseUrl + diagnosticEndpoint);
+    var uri = Uri.parse("$baseUrl$diagnosticEndpoint");
 
     final response = await http.post(uri,
         headers: <String, String>{
@@ -25,7 +26,7 @@ class ApiService {
   }
 
   static Future<List<DiagnosticsModel>> getDiagnostic() async {
-    var uri = Uri.parse(baseUrl + diagnosticEndpoint);
+    var uri = Uri.parse("$baseUrl$diagnosticEndpoint");
     final response = await http.get(uri);
 
     List<DiagnosticsModel> ret = [];
@@ -85,5 +86,27 @@ class ApiService {
     } else {
       return ["-1"];
     }
+  }
+
+  static Future<EventModel> getEventForPatient(String id) async {
+    var uri = Uri.parse("$baseUrl$eventEndpoint/Filter?patientId=$id");
+    var response = await http.get(uri);
+    if (response.statusCode == 200) {
+      return EventModel.fromJson(jsonDecode(response.body).last);
+    } else {
+      throw Exception("Failed to load event data");
+    }
+  }
+
+  static Future<String> updateEvent(String id, EventModel data) async {
+    var uri = Uri.parse("$baseUrl$eventEndpoint/$id");
+    var response = await http.put(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(data.toJson()),
+    );
+    return (response.statusCode.toString());
   }
 }
