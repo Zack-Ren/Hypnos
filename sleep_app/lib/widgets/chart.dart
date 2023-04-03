@@ -40,27 +40,24 @@ class ChartState extends State<Chart> {
                 });
               },
               children: snapshot.data!.map<ExpansionPanel>((ExpansionData d) {
-                int scaleData = 1;
-                if (timeDifference(d.data.dataAcquisitionStartTime,
-                    d.data.dataAcquisitionEndTime)) {
-                  scaleData = 10;
-                }
+                int scale = scaleFactor(d.data.dataAcquisitionStartTime,
+                    d.data.dataAcquisitionEndTime);
                 List<DateTime> timestamps = generateTimestamps(
                     d.data.dataAcquisitionStartTime,
                     d.data.dataAcquisitionEndTime,
-                    scaleData);
+                    scale);
                 List<AccelerationData> accelerationData = extractAcceleration(
                     d.data.accelerationX,
                     d.data.accelerationY,
                     d.data.accelerationZ,
                     timestamps,
-                    scaleData);
+                    scale);
                 List<GyroscopeData> gyroscopeData = extractGyro(
                     d.data.angularAccelerationX,
                     d.data.angularAccelerationY,
                     d.data.angularAccelerationZ,
                     timestamps,
-                    scaleData);
+                    scale);
 
                 return ExpansionPanel(
                   backgroundColor: Color(0xFF3A3A3A),
@@ -177,14 +174,17 @@ class ChartState extends State<Chart> {
     );
   }
 
-  bool timeDifference(DateTime start, DateTime end) {
-    if (end.difference(start).inSeconds > 50) {
-      return true;
+  /// Sets a scaling factor for the chart data based on the number of data points
+  int scaleFactor(DateTime start, DateTime end) {
+    int diff = end.difference(start).inSeconds;
+    if (diff <= 60) {
+      return 1;
     } else {
-      return false;
+      return 10;
     }
   }
 
+  /// Create a list of DateTime based on the start and end time of the recorded data
   List<DateTime> generateTimestamps(DateTime start, DateTime end, int scale) {
     List<DateTime> timestamps = [];
     for (var i = 0; i < end.difference(start).inSeconds; i += scale) {
@@ -193,6 +193,7 @@ class ChartState extends State<Chart> {
     return timestamps;
   }
 
+  /// Pair acceleration data with a DateTime and scale accordingly
   List<AccelerationData> extractAcceleration(
       List<num> x, List<num> y, List<num> z, List<DateTime> t, int scale) {
     List<AccelerationData> data = [];
@@ -204,6 +205,7 @@ class ChartState extends State<Chart> {
     return data;
   }
 
+  /// Pair gyroscope data with a DateTime and scale accordingly
   List<GyroscopeData> extractGyro(
       List<num> x, List<num> y, List<num> z, List<DateTime> t, int scale) {
     List<GyroscopeData> data = [];
@@ -214,6 +216,7 @@ class ChartState extends State<Chart> {
     return data;
   }
 
+  /// Load all sensor data from database and conver it to expansion panel data
   Future<List<ExpansionData>> _asyncLoad() async {
     List<DiagnosticsModel> response = await ApiService.getDiagnostic();
     List<ExpansionData> list = [];
