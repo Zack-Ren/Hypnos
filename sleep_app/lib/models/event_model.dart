@@ -14,35 +14,38 @@ class EventModel {
     required this.id,
     required this.patientId,
     required this.doctorId,
+    required this.eventTime,
     required this.doctorNotes,
     required this.patientNotes,
-    required this.listOfDiagnostics,
+    required this.setOfDiagnostics,
   });
 
   String id;
   String patientId;
   String doctorId;
+  DateTime eventTime;
   String doctorNotes;
   String patientNotes;
-  List<String> listOfDiagnostics;
+  List<String> setOfDiagnostics;
 
   factory EventModel.fromJson(Map<String, dynamic> json) => EventModel(
         id: json["id"],
         patientId: json["patientId"],
         doctorId: json["doctorId"],
+        eventTime: DateTime.parse(json["eventTime"]),
         doctorNotes: json["doctorNotes"],
         patientNotes: json["patientNotes"],
-        listOfDiagnostics:
-            List<String>.from(json["listOfDiagnostics"].map((x) => x)),
+        setOfDiagnostics:
+            List<String>.from(json["setOfDiagnostics"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "patientId": patientId,
         "doctorId": doctorId,
+        "eventTime": eventTime.toIso8601String(),
         "doctorNotes": doctorNotes,
         "patientNotes": patientNotes,
-        "listOfDiagnostics":
-            List<dynamic>.from(listOfDiagnostics.map((x) => x)),
+        "setOfDiagnostics": List<dynamic>.from(setOfDiagnostics.map((x) => x)),
       };
 }
