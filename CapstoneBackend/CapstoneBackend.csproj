@@ -27,7 +27,6 @@
     <None Remove="Services\ManagementService\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Services\EventService\" />
     <Folder Include="Services\ManagementService\" />
   </ItemGroup>
 </Project>

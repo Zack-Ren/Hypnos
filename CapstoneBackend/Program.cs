@@ -12,11 +12,6 @@ namespace CapstoneBackend
             // Add services to the container.
             builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("CapstoneDatabase"));
             builder.Services.Configure<Secrets>(builder.Configuration.GetSection("ConnectionString"));
-            builder.Services.AddSingleton<PatientService>();
-            builder.Services.AddSingleton<DoctorService>();
-            builder.Services.AddSingleton<EventService>();
-            builder.Services.AddSingleton<DiagnosticService>();
-            builder.Services.AddSingleton<PersonService>();
             builder.Services.AddSingleton <ManagementService>();
 
             builder.Services.AddControllers();
