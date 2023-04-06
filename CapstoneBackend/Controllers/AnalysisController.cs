@@ -9,15 +9,15 @@ namespace CapstoneBackend.Controllers
     [Route("api/Analysis")]
     public class AnalysisController : Controller
     {
-        private readonly AnalysisService _analysisService;
+        private readonly ManagementService _managementService;
 
-        public AnalysisController(AnalysisService analysisService) =>
-            _analysisService = analysisService;
+        public AnalysisController(ManagementService managementService) =>
+            _managementService = managementService;
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Analysis>> Get(string id)
         {
-            var diagnostics = await _analysisService.GetAsync(id);
+            var diagnostics = await _managementService.GetDiagnosticAsync(id);
 
             if (diagnostics is null)
             {

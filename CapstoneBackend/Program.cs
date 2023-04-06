@@ -12,12 +12,8 @@ namespace CapstoneBackend
             // Add services to the container.
             builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("CapstoneDatabase"));
             builder.Services.Configure<Secrets>(builder.Configuration.GetSection("ConnectionString"));
-            builder.Services.AddSingleton<PatientService>();
-            builder.Services.AddSingleton<DoctorService>();
-            builder.Services.AddSingleton<EventService>();
-            builder.Services.AddSingleton<DiagnosticsService>();
+            builder.Services.AddSingleton <ManagementService>();
             builder.Services.AddSingleton<PersonService>();
-            builder.Services.AddSingleton<AnalysisService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -16,6 +16,9 @@ namespace CapstoneBackend.Models
         [BsonElement("doctorId")]
         public string? DoctorId { get; set; }
 
+        [BsonElement("eventTime")]
+        public DateTime EventTime { get; set; }
+
         [BsonElement("doctorNotes")]
         public string DoctorNotes { get; set; }
 
