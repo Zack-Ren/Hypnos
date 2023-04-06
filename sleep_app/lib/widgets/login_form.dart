@@ -16,6 +16,7 @@ class LoginFormState extends State<LoginForm> {
   final userController = TextEditingController();
   final passwordController = TextEditingController();
 
+  bool _isLoading = false;
   bool _isChecked = false;
   bool loggedIn = true;
 
@@ -50,7 +51,7 @@ class LoginFormState extends State<LoginForm> {
             child: TextFormField(
               validator: (String? value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter email';
+                  return 'Please enter username';
                 } else {
                   return null;
                 }
@@ -127,29 +128,30 @@ class LoginFormState extends State<LoginForm> {
           CircleAvatar(
             radius: 30,
             backgroundColor: Color(0xFF7F78AB),
-            child: IconButton(
-              iconSize: 25,
-              icon: const Icon(Icons.arrow_forward_sharp),
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  // TODO: login api
-                  ApiService.userLogin(
-                          userController.text, passwordController.text)
-                      .then((List<String> id) {
-                    if (id[0] != "-1") {
-                      DataModel.setId(id[0]);
-                      DataModel.setDocId(id[1]);
-                      context.go('/home');
-                    } else {
-                      setState(() {
-                        loggedIn = false;
-                      });
-                    }
-                  });
-                }
-              },
-              color: Colors.white,
-            ),
+            child: _isLoading
+                ? CircularProgressIndicator(color: Colors.white)
+                : IconButton(
+                    iconSize: 25,
+                    icon: const Icon(Icons.arrow_forward_sharp),
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        List<String> response = await ApiService.userLogin(
+                            userController.text, passwordController.text);
+                        setState(() {
+                          _isLoading = false;
+                        });
+                        if (response[0] != '-1') {
+                          DataModel.setId(response[0]);
+                          DataModel.setDocId(response[1]);
+                          if (context.mounted) context.go('/home');
+                        }
+                      }
+                    },
+                    color: Colors.white,
+                  ),
           ),
         ],
       ),
