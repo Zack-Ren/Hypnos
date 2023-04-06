@@ -1,3 +1,5 @@
+/// Holds diagnostic events and ExpansionPanel identifier for graph generation on stats page
+
 import 'package:sleep_app/models/diagnostic_model.dart';
 
 class ExpansionData {

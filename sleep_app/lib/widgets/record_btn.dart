@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:sleep_app/models/data.dart';
 import 'package:sleep_app/models/diagnostic_model.dart';
+import 'package:sleep_app/models/event_model.dart';
 import 'package:sleep_app/services/api_service.dart';
 import 'package:stream_transform/stream_transform.dart';
 
@@ -22,11 +23,13 @@ class _RecordButtonState extends State<RecordButton> {
   final List<List<double>> _accelerometerData = List.filled(3, []);
   final List<List<double>> _gyroscopeData = List.filled(3, []);
   final _streamSubscriptions = <StreamSubscription<dynamic>>[];
+  late Future<EventModel> event;
 
   @override
   void initState() {
     super.initState();
     isRecording = false;
+    event = ApiService.getEventForPatient(DataModel.getId());
   }
 
   @override
@@ -37,52 +40,69 @@ class _RecordButtonState extends State<RecordButton> {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        shape: CircleBorder(),
-        padding: EdgeInsets.all(24),
-        backgroundColor: isRecording ? Color(0xFFDA6A6A) : Color(0xFF7F78AB),
-        minimumSize: Size(230, 230),
-      ),
-      child: Text(
-        isRecording ? btnText[1] : btnText[0],
-        style: TextStyle(fontSize: 20),
-      ),
-      onPressed: () {
-        if (isRecording == false) {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text("Do you want to start recording?"),
-                actions: <TextButton>[
-                  TextButton(
-                    child: Text("Cancel"),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                  TextButton(
-                    child: Text("Yes"),
-                    onPressed: () {
-                      setState(() {
-                        isRecording = true;
-                        startTime = DateTime.now();
-                      });
-                      _record();
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              );
+    return FutureBuilder<EventModel>(
+      future: event,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: CircleBorder(),
+              padding: EdgeInsets.all(24),
+              backgroundColor:
+                  isRecording ? Color(0xFFDA6A6A) : Color(0xFF7F78AB),
+              minimumSize: Size(230, 230),
+            ),
+            child: Text(
+              isRecording ? btnText[1] : btnText[0],
+              style: TextStyle(fontSize: 20),
+            ),
+            onPressed: () {
+              if (isRecording == false) {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text("Do you want to start recording?"),
+                      actions: <TextButton>[
+                        TextButton(
+                          child: Text("Cancel"),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        TextButton(
+                          child: Text("Yes"),
+                          onPressed: () {
+                            setState(() {
+                              isRecording = true;
+                              startTime =
+                                  DateTime.now().subtract(Duration(hours: 4));
+                            });
+                            _record();
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              } else {
+                setState(() {
+                  isRecording = false;
+                });
+                _stopStream();
+                String id = _generateId();
+                _insertData(id);
+                updateEvent(id, snapshot.data!);
+                print("Stopped recording");
+              }
             },
           );
-        } else {
-          setState(() {
-            isRecording = false;
-          });
-          _stopStream();
-          _insertData();
-          print("Stopped recording");
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
         }
+        return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const [CircularProgressIndicator()]);
       },
     );
   }
@@ -126,7 +146,8 @@ class _RecordButtonState extends State<RecordButton> {
     return id;
   }
 
-  Future<void> _insertData() async {
+  Future<void> _insertData(String id) async {
+    var patientId = DataModel.getId();
     if (_accelerometerData[0].length < _gyroscopeData[0].length) {
       var l = _gyroscopeData[0].length;
       for (int i = 0; i < 3; i++) {
@@ -138,13 +159,12 @@ class _RecordButtonState extends State<RecordButton> {
         _accelerometerData[i].removeRange(_gyroscopeData[0].length, l);
       }
     }
-    print("accel: ${_accelerometerData.length}");
-    print("gyro: ${_gyroscopeData.length}");
+
     DateTime endTime =
         startTime.add(Duration(seconds: _accelerometerData[0].length));
     final data = DiagnosticsModel(
-      id: _generateId(),
-      patientId: DataModel.getId(),
+      id: id,
+      patientId: patientId,
       dataAcquisitionStartTime: startTime,
       dataAcquisitionEndTime: endTime,
       accelerationX: _accelerometerData[0],
@@ -154,26 +174,14 @@ class _RecordButtonState extends State<RecordButton> {
       angularAccelerationY: _gyroscopeData[1],
       angularAccelerationZ: _gyroscopeData[2],
     );
+
     final response = await ApiService.insertDiagnostic(data);
     print(response);
   }
 
-  // Legacy: direct connection to DB
-  // Future<void> _insertData() async {
-  //   var id = M.ObjectId();
-  //   final data = DiagnosticsModel(
-  //       id: id,
-  //       patientId: "testPatientID",
-  //       dataAcquisitionStartTime: date,
-  //       accelerationX: _accelerometerData[0],
-  //       accelerationY: _accelerometerData[1],
-  //       accelerationZ: _accelerometerData[2],
-  //       angularAccelerationX: _gyroscopeData[0],
-  //       angularAccelerationY: _gyroscopeData[1],
-  //       angularAccelerationZ: _gyroscopeData[2],
-  //       timeInterval: [0.0]);
-
-  //   var result = await Database.insertDiagnostics(data);
-  //   print(result);
-  // }
+  Future<void> updateEvent(String id, EventModel event) async {
+    event.setOfDiagnostics.add(id);
+    final response = await ApiService.updateEvent(event.id, event);
+    print(response);
+  }
 }

@@ -1,3 +1,5 @@
+/// Similar to [AccelerationData], but holds gyroscope data.
+
 class GyroscopeData {
   final DateTime date;
   final List<num> val;
