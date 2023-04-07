@@ -1,11 +1,11 @@
 import { AddIcon, Button, Card, ErrorIcon, Flex, Loader, Segment, Text, WindowMinimizeIcon } from "@fluentui/react-northstar";
 import { AxiosResponse } from "axios";
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Legend } from "chart.js";
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Legend, BarElement } from "chart.js";
 import { FunctionComponent, useEffect, useState } from "react";
-import { Line } from "react-chartjs-2";
-import { Diagnostics } from "../../Models/Diagnostics";
-import { getDiagnostic } from "../../Requests/GetDiagnostic";
+import { Bar, Line } from "react-chartjs-2";
 import { toLocalDateTime } from "../../Utils/UtilityFxs";
+import { Analysis } from "../../Models/Analysis";
+import { getAnalysis } from "../../Requests/GetAnalysis";
 
 /**
  * Interface for Diagnostic Props
@@ -20,6 +20,7 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
+  BarElement,
   Title,
   Legend
 );
@@ -31,18 +32,18 @@ ChartJS.register(
  */
 export const Diagnostic: FunctionComponent<IDiagnosticProps> = (props: IDiagnosticProps) => {
     // State
-    const [diagnosticData, setDiagnosticData] = useState<Diagnostics | null>(null)
+    const [analytics, setAnalyticsData] = useState<Analysis | null>(null)
     const [showGraph, setShowGraph] = useState<boolean>(false);
 
     // Hooks
     useEffect(() => {
-        const getDiagnosticData = async () => {
-            const diagnosticResponse: AxiosResponse<Diagnostics> = await getDiagnostic(props.diagnosticId);
-            setDiagnosticData(diagnosticResponse.data);
+        const getAnalyticsData = async () => {
+            const analyticsResponse: AxiosResponse<Analysis> = await getAnalysis(props.diagnosticId);
+            setAnalyticsData(analyticsResponse.data);
             console.log(props);
         }
 
-        getDiagnosticData();
+        getAnalyticsData();
     },[props.diagnosticId, props]);
 
     // Auxillary Functions (logic)
@@ -60,11 +61,11 @@ export const Diagnostic: FunctionComponent<IDiagnosticProps> = (props: IDiagnost
         return newArr;
     }
 
-    if (diagnosticData === null) {
+    if (analytics === null) {
         return <Loader size="largest" />
     }
 
-    const labels = generateLabel(diagnosticData.accelerationX);
+    const labels = generateLabel(analytics.accelerationX);
 
     // Data to be rendered
     const accelerationData = {
@@ -72,19 +73,19 @@ export const Diagnostic: FunctionComponent<IDiagnosticProps> = (props: IDiagnost
         datasets: [
             {
                 label: "X-Axis Acceleration",
-                data: diagnosticData.accelerationX,
+                data: analytics.accelerationX,
                 borderColor: 'rgb(0,0,0)',
                 backgroundColor: 'rgba(0,0,0, 0.5)',
             },
             {
                 label: "Y-Axis Acceleration",
-                data: diagnosticData.accelerationY,
+                data: analytics.accelerationY,
                 borderColor: 'rgb(100, 100, 0)',
                 backgroundColor: 'rgba(100, 100, 0, 0.5)',
             },
             {
                 label: "Z-Axis Acceleration",
-                data: diagnosticData.accelerationZ,
+                data: analytics.accelerationZ,
                 borderColor: 'rgb(0,100,0)',
                 backgroundColor: 'rgba(0,100,0, 0.5)',
             }
@@ -96,26 +97,112 @@ export const Diagnostic: FunctionComponent<IDiagnosticProps> = (props: IDiagnost
         datasets: [
             {
                 label: "X-Axis Angular Acceleration",
-                data: diagnosticData.angularAccelerationX,
+                data: analytics.angularAccelerationX,
                 borderColor: 'rgb(0,0,0)',
                 backgroundColor: 'rgba(0,0,0, 0.5)',
             },
             {
                 label: "Y-Axis Angular Acceleration",
-                data: diagnosticData.angularAccelerationY,
+                data: analytics.angularAccelerationY,
                 borderColor: 'rgb(100, 100, 0)',
                 backgroundColor: 'rgba(100, 100, 0, 0.5)',
             },
             {
                 label: "Z-Axis Angular Acceleration",
-                data: diagnosticData.angularAccelerationZ,
+                data: analytics.angularAccelerationZ,
                 borderColor: 'rgb(0,100,0)',
                 backgroundColor: 'rgba(0,100,0, 0.5)',
             }
         ]
     };
 
-    const startTime = toLocalDateTime(diagnosticData.dataAcquisitionStartTime);    
+    const positionColors = ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"];
+
+    const sleepingPositionBackgroundColor: string[] = []
+    const sleepingPositionDataNums: number[] = []
+
+    analytics.sleepPositions.forEach(position => {
+        switch (position){
+            case "left-side":
+                sleepingPositionDataNums.push(1);
+                sleepingPositionBackgroundColor.push("#FF6384");
+                break;
+            case "back":
+                sleepingPositionDataNums.push(2);
+                sleepingPositionBackgroundColor.push("#36A2EB");
+                break;
+            case "right-side":
+                sleepingPositionDataNums.push(3);
+                sleepingPositionBackgroundColor.push("#FFCE56");
+                break;
+            case "stomach":
+                sleepingPositionDataNums.push(4);
+                sleepingPositionBackgroundColor.push("#4BC0C0");
+                break;
+        }
+    });
+
+    const sleepingPositionData = {
+        labels: labels,
+        datasets: [
+            {
+                label: "Sleeping Positions",
+                data: sleepingPositionDataNums,
+                backgroundColor: sleepingPositionBackgroundColor,
+                borderColor: sleepingPositionBackgroundColor,
+                borderWidth: 1,
+                fill: false
+            },
+            {
+                label: "Left-Side",
+                data: [],
+                backgroundColor: "#FF6384"
+            },
+            {
+                label: "Back",
+                data: [],
+                backgroundColor: "#36A2EB"
+            },
+            {
+                label: "Right-Side",
+                data: [],
+                backgroundColor: "#FFCE56"
+            },
+            {
+                label: "Stomach",
+                data: [],
+                backgroundColor: "#4BC0C0"
+            }
+        ]
+    }
+
+    const sleepingOptions = {
+        plugins: {
+            legend: {
+                display: true,
+                position: "top" as const,
+            },
+            tooltip: {
+                bodyFont: {
+                    size: 15
+                }
+            }
+        }
+    }
+
+    const breathingRateData = {
+        labels: generateLabel(analytics.breathingRates),
+        datasets: [
+            {
+                label: "Breathing Rate",
+                data: analytics.breathingRates,
+                borderColor: 'rgb(0,0,0)',
+                backgroundColor: 'rgba(0,0,0, 0.5)'
+            }
+        ]
+    }
+
+    const startTime = toLocalDateTime(analytics.dataAcquisitionStartTime);    
 
     // Rendering component
     console.log(props);
@@ -125,7 +212,7 @@ export const Diagnostic: FunctionComponent<IDiagnosticProps> = (props: IDiagnost
                 <Flex space="between">
                     <Flex vAlign="center" gap="gap.large">
                         <Text content={`${startTime}`} weight="bold" size="larger"/>
-                        <ErrorIcon size="largest" />
+                        {!analytics.alert && <ErrorIcon size="largest" />}
                     </Flex>
                     <Button icon={showGraph ? <WindowMinimizeIcon /> : <AddIcon />} primary circular onClick={() => setShowGraph(!showGraph)}/> 
                 </Flex>
@@ -133,14 +220,25 @@ export const Diagnostic: FunctionComponent<IDiagnosticProps> = (props: IDiagnost
             {showGraph && 
             <Card fluid aria-roledescription="card with avatar, image and action buttons">
                 <Card.Body>
-                    <Flex fill gap="gap.medium" space="around">
-                        <Flex fill>
-                            <Line data={accelerationData} title={"Acceleration Data"}/>
+                    <Flex column>
+                        <Flex fill gap="gap.medium" space="around">
+                            <Flex fill>
+                                <Line data={accelerationData} title={"Acceleration Data"}/>
+                            </Flex>
+                            <Flex fill>
+                                <Line data={angularAccelerationData} title={"Angular Acceleration Data"}/>
+                            </Flex>
                         </Flex>
-                        <Flex fill>
-                            <Line data={angularAccelerationData} title={"Angular Acceleration Data"}/>
+                        <Flex column gap="gap.medium">
+                            <Flex fill>
+                                <Line data={breathingRateData} title={"Breathing Rate Data"}/>
+                            </Flex>
+                            <Flex fill>
+                                <Bar data={sleepingPositionData} options={sleepingOptions} title={"Sleeping Position Data"}/>
+                            </Flex>
                         </Flex>
                     </Flex>
+                    
                 </Card.Body>
                 <Card.Footer styles={{padding: "20px 0px 0px 0px"}}>
                 </Card.Footer>
