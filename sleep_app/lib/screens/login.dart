@@ -30,9 +30,9 @@ class _LoginState extends State<Login> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
               SizedBox(height: 200),
-              Text(
-                "Sleep App",
-                style: TextStyle(fontSize: 24, color: Colors.white),
+              Image(
+                image: AssetImage('lib/assets/logo.png'),
+                width: 200,
               ),
               LoginForm(),
               Spacer(),

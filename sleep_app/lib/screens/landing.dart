@@ -27,9 +27,9 @@ class Landing extends StatelessWidget {
                 SizedBox(
                   height: 350,
                 ),
-                Text(
-                  'Sleep App',
-                  style: TextStyle(fontSize: 24, color: Colors.white),
+                Image(
+                  image: AssetImage('lib/assets/logo.png'),
+                  width: 200,
                 ),
                 Spacer(),
                 TextButton(
